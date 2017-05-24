@@ -1,0 +1,6 @@
+C:\Users\Vinh Ton That\Desktop\Check\Check\bin\Debug\Check.exe.config
+C:\Users\Vinh Ton That\Desktop\Check\Check\bin\Debug\Check.exe
+C:\Users\Vinh Ton That\Desktop\Check\Check\bin\Debug\Check.pdb
+C:\Users\Vinh Ton That\Desktop\Check\Check\obj\Debug\Check.exe
+C:\Users\Vinh Ton That\Desktop\Check\Check\obj\Debug\Check.pdb
+C:\Users\Vinh Ton That\Desktop\Check\Check\obj\Debug\Check.csprojResolveAssemblyReference.cache
