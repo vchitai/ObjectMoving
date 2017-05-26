@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Check
 {
-    class KhuHang
+    public class KhuHang
     {
         private int posX;
         private int posY;

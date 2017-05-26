@@ -1,0 +1,12 @@
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\obj\Debug\ObjectMovingGUI.csprojResolveAssemblyReference.cache
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\obj\Debug\ObjectMovingGUI.MainForm.resources
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\obj\Debug\ObjectMovingGUI.Properties.Resources.resources
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\obj\Debug\ObjectMovingGUI.csproj.GenerateResource.Cache
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\bin\Debug\ObjectMovingGUI.exe.config
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\bin\Debug\ObjectMovingGUI.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\bin\Debug\ObjectMovingGUI.pdb
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\bin\Debug\Check.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\bin\Debug\Check.pdb
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\bin\Debug\Check.exe.config
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\obj\Debug\ObjectMovingGUI.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingGUI\obj\Debug\ObjectMovingGUI.pdb

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Check
 {
-    class Date
+    public class Date
     {
         private int ngay;
         private int thang;
@@ -81,7 +81,7 @@ namespace Check
         }
     }
 
-    class KienHang
+    public class KienHang
     {
         private int posX;
         private int posY;

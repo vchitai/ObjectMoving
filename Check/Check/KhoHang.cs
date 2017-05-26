@@ -6,10 +6,20 @@ using System.Threading.Tasks;
 
 namespace Check
 {
-    class KhoHang
+    public class KhoHang
     {
         private int soLuongKhu;
         private List<KhuHang> khu;
+
+        public int getSoLuongKhu()
+        {
+            return soLuongKhu;
+        }
+
+        public KhuHang getKhu(int i)
+        {
+            return khu[i];
+        }
 
         private int toInt(string s)
         {
