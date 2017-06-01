@@ -31,3 +31,5 @@ C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\MainW
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.g.resources
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.Properties.Resources.resources
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.g.cs
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.baml

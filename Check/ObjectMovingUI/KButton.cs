@@ -21,7 +21,17 @@ namespace ObjectMovingUI
 
         public KButton(KienHang _kienHang)
         {
-            kienHang = _kienHang;            
+            kienHang = _kienHang;
+        }
+
+        public string getInfo()
+        {
+            return kienHang.getInfo();
+        }
+
+        public KienHang getKienHang()
+        {
+            return kienHang;
         }
 
         public void setLeft(KButton b)
@@ -41,18 +51,20 @@ namespace ObjectMovingUI
 
             }
             else if (id == 1)
-            {                
+            {
                 this.Background = brush1;
             }
             else if (id == 2)
-            {                
+            {
                 this.Background = brush2;
             }
             else if (id == -2)
             {
-                
+
                 this.Background = brush3;
-            }            
-        }
+            }
+        }        
+
     }
+       
 }

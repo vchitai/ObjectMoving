@@ -5,6 +5,7 @@ using Check;
 using System.Windows.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace ObjectMovingUI
 {
@@ -49,7 +50,9 @@ namespace ObjectMovingUI
                         btn.Height = buttonHeight;
                         btn.Width = buttonWidth;
                         btn.Content = btn.Name;
-                        btn.Click += ButtonOnClick;
+                        btn.Click += Btn_Click;
+                        btn.MouseDown += Btn_MouseDown;
+                        btn.MouseEnter += Btn_MouseEnter;
 
                         btn.setBackGround(khuHang.get(i, j).getWidth());
 
@@ -91,12 +94,37 @@ namespace ObjectMovingUI
             DrawArea.Content = sp;
         }
 
-        void ButtonOnClick(object sender, RoutedEventArgs args)
+        private void Btn_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Button btn = args.Source as Button;
+            KButton btn = e.Source as KButton;
 
-            MessageBox.Show("Button " + btn.Name + " has been clicked",
-                            "Button Click");
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                KienHang k = btn.getKienHang();
+                if (k.getWidth() != 0)
+                {
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang());
+                    p.Show();
+                }
+            }
+            else
+            {
+
+            }
         }
+
+        private void Btn_Click(object sender, RoutedEventArgs e)
+        {
+            KButton btn = e.Source as KButton;            
+        }
+
+        private void Btn_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            KButton btn = e.Source as KButton;            
+
+            btn.ToolTip = btn.getInfo();            
+            //btn.ToolTip = new PopUp();
+        }
+       
     }
 }
