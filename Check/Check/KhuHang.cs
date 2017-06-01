@@ -144,5 +144,10 @@ namespace Check
         {
             return nCol;
         }
+
+        public float getAngle()
+        {
+            return gocNghieng;
+        }
     }
 }
