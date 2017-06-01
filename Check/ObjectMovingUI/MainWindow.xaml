@@ -6,5 +6,24 @@
         xmlns:local="clr-namespace:ObjectMovingUI"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-   
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="28" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Object Moving GUI Project"/>
+        <ScrollViewer Grid.Row="1" Grid.Column="0" x:Name="DrawArea" BorderBrush="Black" BorderThickness="5" Background="LightPink"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Zoom box aka Slider to Zoom"/>
+        <StackPanel Margin="20, 5, 0, 0" Grid.Column="1" Grid.RowSpan="3">
+            <Label Content="Features"/>
+            <Label Content="The fuck"/>
+            <Label Content="The fuck"/>
+            <Label Content="Another fuck"/>
+        </StackPanel>
+    </Grid>
 </Window>

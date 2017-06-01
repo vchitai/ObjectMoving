@@ -21,9 +21,8 @@ namespace ObjectMovingUI
         {
             InitializeComponent();
             khoHang = new KhoHang();
-            ScrollViewer sv = new ScrollViewer();
-            sv.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-            sv.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             StackPanel sp = new StackPanel();
             sp.Orientation = Orientation.Horizontal;
             for (int k = 0; k < khoHang.getSoLuongKhu(); k++)
@@ -74,8 +73,7 @@ namespace ObjectMovingUI
                 wp.Margin = new Thickness(offset, 0, 0, 0);
                 sp.Children.Add(wp);
             }
-            sv.Content = sp;
-            Content = sv;
+            DrawArea.Content = sp;
         }
 
         void ButtonOnClick(object sender, RoutedEventArgs args)
