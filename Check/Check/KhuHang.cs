@@ -109,6 +109,28 @@ namespace Check
                 if (w == 2)
                     kienHang[x][y + 1] = new Check.KienHang(x, y, -w, maKienHang, donGia, ngayNhapKho);
             }
+
+            for(int i = 0; i < nRow; ++i)
+            {
+                for(int j = 0; j < nCol; ++j)
+                {
+                    if (j == nCol - 1)
+                        kienHang[i][j].setKienHangRight(null);
+                    else
+                        kienHang[i][j].setKienHangRight(kienHang[i][j + 1]);
+                }
+            }
+
+            for (int i = 0; i < nRow; ++i)
+            {
+                for (int j = 0; j < nCol; ++j)
+                {
+                    if (j == 0)
+                        kienHang[i][j].setKienHangLeft(null);
+                    else
+                        kienHang[i][j].setKienHangLeft(kienHang[i][j - 1]);
+                }
+            }
         }
 
         public void printOnConsole()

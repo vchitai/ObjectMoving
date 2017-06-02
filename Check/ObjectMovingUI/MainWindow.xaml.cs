@@ -19,6 +19,8 @@ namespace ObjectMovingUI
         public const int buttonWidth = 40;
         public const int offset = 50;
 
+        PopUp mess = new PopUp(new KienHang());
+
         public MainWindow()
         {
             InitializeComponent();
@@ -102,14 +104,27 @@ namespace ObjectMovingUI
             {
                 KienHang k = btn.getKienHang();
                 if (k.getWidth() != 0)
+                {                         
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang());
+                    if (p != null)
+                    {
+                        p.kichThuocEdit.Visibility = Visibility.Collapsed;
+                        p.Show();
+                    }
+                }
+                else
                 {
                     PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang());
-                    p.Show();
+                    if (p != null)
+                    {
+                        p.kichThuoc.Visibility = Visibility.Collapsed;
+                        p.delete.Visibility = Visibility.Collapsed;
+                        p.Show();
+                    }                    
                 }
             }
             else
-            {
-
+            {                
             }
         }
 
@@ -122,8 +137,7 @@ namespace ObjectMovingUI
         {
             KButton btn = e.Source as KButton;            
 
-            btn.ToolTip = btn.getInfo();            
-            //btn.ToolTip = new PopUp();
+            btn.ToolTip = btn.getInfo();                        
         }
        
     }

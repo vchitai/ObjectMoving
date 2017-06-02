@@ -21,7 +21,8 @@
         <Button x:Name="save" Content="Save" HorizontalAlignment="Left" Height="27" Margin="148,124,0,0" VerticalAlignment="Top" Width="55" IsCancel="True" Click="save_Click" FontWeight="Bold"/>
         <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Height="27" Margin="212,124,0,0" VerticalAlignment="Top" Width="55" IsCancel="True" Click="cancel_Click"/>
         <TextBlock x:Name="kichThuoc" HorizontalAlignment="Left" Height="15" Margin="82,8,0,0" TextWrapping="Wrap" Text="Kích thước:" VerticalAlignment="Top" Width="24"/>
-        <Button x:Name="button" Content="Delete" HorizontalAlignment="Left" Margin="6,124,0,0" VerticalAlignment="Top" Width="63" Height="27" FontWeight="Bold" Click="button_Click"/>
+        <Button x:Name="delete" Content="Delete" HorizontalAlignment="Left" Margin="6,124,0,0" VerticalAlignment="Top" Width="63" Height="27" FontWeight="Bold" Click="delete_Click"/>
+        <TextBox x:Name="kichThuocEdit" HorizontalAlignment="Left" Height="15" Margin="82,8,0,0" TextWrapping="Wrap" Text="(1-2)" VerticalAlignment="Top" Width="35"/>
 
     </Grid>
 </Window>

@@ -212,6 +212,9 @@ namespace Check
         private int posY;
         private int width;
 
+        private KienHang left;
+        private KienHang right;
+
         private string maKienHang;
         private int donGia;
         private Date ngayNhapKho;
@@ -245,14 +248,15 @@ namespace Check
             string res = "";
             if (width == 0)
             {
-                res = "Chưa có kiện hàng ở ô hàng này";
+                res = "Chưa có kiện hàng ở ô hàng này.\n\nClick chuột phải để thêm kiện hàng.";
             }
             else
             {
-                res = String.Format("Độ dài: {0}\n", Math.Abs(width));
-                res = res + "Ngày nhập kho: " + ngayNhapKho.getInfo() + "\n";
-                res = res + "Mã kiện hàng: " + maKienHang + "\n";
-                res = res + String.Format("Đơn giá: {0}", donGia);
+                res = String.Format("Độ dài:                  {0}.\n", Math.Abs(width));
+                res = res +         "Ngày nhập kho:     " + ngayNhapKho.getInfo() + ".\n";
+                res = res +         "Mã kiện hàng:       " + maKienHang + ".\n";
+                res = res + String.Format("Đơn giá:                {0}.", donGia);
+                res = res + "\n\nClick chuột phải để chỉnh sửa thông tin kiện hàng.";
             }
             return res;             
         }
@@ -302,23 +306,99 @@ namespace Check
             return width;
         }
 
+        private void updateInfo(int w, Date d, string maKien, int gia)
+        {
+            width = -2;
+            ngayNhapKho = d;
+            maKienHang = maKien;
+            donGia = gia;
+        }
+
+        public void setKienHangRight(KienHang k)
+        {
+            right = k;
+        }
+
+        public void setKienHangLeft(KienHang k)
+        {
+            left = k;
+        }
+
         public int setInfo(string ngay, string thang, string nam, string maKien, string _donGia)
         {
             Date d = Date.convert(ngay, thang, nam);
-            if (d.layNam() == -1) return -1;
+            if (d.layNam() == -1) return -2;
             int x = 0;
             int gia = 0;
             if (Int32.TryParse(_donGia, out x))
             {
                 gia = Int32.Parse(_donGia);
             }
-            else return -1;
-
+            else return -3;
+            
             ngayNhapKho = d;
             maKienHang = maKien;
             donGia = gia;
 
             return 1;               
+        }
+
+        public int setInfo2(string _kichThuoc, string ngay, string thang, string nam, string maKien, string _donGia)
+        {
+            int x = 0;
+            int kk = 0;
+            if (Int32.TryParse(_kichThuoc, out x))
+            {
+                kk = Int32.Parse(_kichThuoc);
+                if (kk < 1 || kk > 2)
+                    return -1;                      
+            }
+            else
+            {
+                return -1;
+            }
+            Date d = Date.convert(ngay, thang, nam);
+            if (d.layNam() == -1) return -2;            
+            int gia = 0;
+            if (Int32.TryParse(_donGia, out x))
+            {
+                gia = Int32.Parse(_donGia);
+            }
+            else return -3;
+
+            if (kk == 2 && (right == null || right.getWidth() != 0))
+                return -4;
+            else 
+                if (kk == 2)
+                    right.updateInfo(-2, d, maKien, gia);               
+
+            width = kk;
+            ngayNhapKho = d;
+            maKienHang = maKien;
+            donGia = gia;
+
+            return 1;
+        }
+
+        private void setEmpty()
+        {
+            posX = posY = width = 0;
+            maKienHang = "";
+            donGia = 0;
+            ngayNhapKho = new Date(-1, -1, -1);
+        }
+
+        public void refresh()
+        {
+            if (width == 2)
+            {
+                right.setEmpty();
+            }
+            if (width == -2)
+            {
+                left.setEmpty();
+            }
+            this.setEmpty();   
         }
     }
 }
