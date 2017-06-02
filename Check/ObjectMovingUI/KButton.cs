@@ -66,10 +66,23 @@ namespace ObjectMovingUI
             }
             else if (id == -2)
             {
-
                 this.Background = brush3;
             }
         }
+
+        private void upBackGround()
+        {
+            this.setBackGround(kienHang.getWidth());
+        }
+
+        public void updateBackGround()
+        {
+            this.upBackGround();
+            if (this.left != null)
+                this.left.upBackGround();
+            if (this.right != null)
+                this.right.upBackGround();
+        }        
 
         public void move(KhoHang k, KButton b)
         {

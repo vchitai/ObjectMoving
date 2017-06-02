@@ -77,32 +77,49 @@ namespace Check
             if (pre_y < 0 || pre_y >= khu[pre_k].getNCol()) return -3;
             if (new_y < 0 || new_y >= khu[new_k].getNCol()) return -3;
 
-            int w1 = khu[pre_k].get(pre_x, pre_y).getWidth();
-            int w2 = khu[new_k].get(new_x, new_y).getWidth();
+            int w1 = khu[pre_k].get(pre_x, pre_y).getWidth();            
             
             if (w1 == 0) return -2;
-
-            if (w2 != 0) return -1;
+            
             if (w1 == 2)
             {
                 if (new_y + 1 >= khu[new_k].getNCol()) return -1;
-                if (khu[new_k].get(new_x, new_y + 1).getWidth() != 0) return -1;                
-                khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
-                khu[new_k].set(new_x, new_y + 1, khu[pre_k].get(pre_x, pre_y + 1));
+                KienHang temp1 = new KienHang();
+                KienHang temp2 = new Check.KienHang();
+                temp1.copy(khu[pre_k].get(pre_x, pre_y));
+                temp2.copy(khu[pre_k].get(pre_x, pre_y + 1));
                 khu[pre_k].get(pre_x, pre_y).refresh();
                 khu[pre_k].get(pre_x, pre_y + 1).refresh();
+                if (khu[new_k].get(new_x, new_y + 1).getWidth() != 0 || khu[new_k].get(new_x, new_y).getWidth() != 0)
+                {
+                    khu[pre_k].set(pre_x, pre_y, temp1);
+                    khu[pre_k].set(pre_x, pre_y + 1, temp2);
+                    return -1;
+                }
+                khu[new_k].set(new_x, new_y, temp1);
+                khu[new_k].set(new_x, new_y + 1, temp2);                
             }
             if (w1 == -2)
             {
                 if (new_y - 1 < 0) return -1;
-                if (khu[new_k].get(new_x, new_y - 1).getWidth() != 0) return -1;
-                khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
-                khu[new_k].set(new_x, new_y - 1, khu[pre_k].get(pre_x, pre_y - 1));
+                KienHang temp1 = new KienHang();
+                KienHang temp2 = new Check.KienHang();
+                temp1.copy(khu[pre_k].get(pre_x, pre_y));
+                temp2.copy(khu[pre_k].get(pre_x, pre_y - 1));
                 khu[pre_k].get(pre_x, pre_y).refresh();
                 khu[pre_k].get(pre_x, pre_y - 1).refresh();
+                if (khu[new_k].get(new_x, new_y - 1).getWidth() != 0 || khu[new_k].get(new_x, new_y).getWidth() != 0)
+                {
+                    khu[pre_k].set(pre_x, pre_y, temp1);
+                    khu[pre_k].set(pre_x, pre_y - 1, temp2);
+                    return -1;
+                }
+                khu[new_k].set(new_x, new_y, temp1);
+                khu[new_k].set(new_x, new_y - 1, temp2);                
             }
             if (w1 == 1)
             {
+                if (khu[new_k].get(new_x, new_y).getWidth() != 0) return -1;
                 khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
                 khu[pre_k].get(pre_x, pre_y).refresh();
             }            

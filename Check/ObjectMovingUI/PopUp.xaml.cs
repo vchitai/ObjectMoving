@@ -21,11 +21,13 @@ namespace ObjectMovingUI
     public partial class PopUp : Window
     {        
         private KienHang k;
+        private KButton b;
 
-        public PopUp(KienHang kienHang)
+        public PopUp(KienHang kienHang, KButton _b)
         {            
             InitializeComponent();
             k = kienHang;
+            b = _b;
             this.kichThuoc.Text = kienHang.getWidthInfo();
             this.ngay.Text = kienHang.getNgayInfo();
             this.thang.Text = kienHang.getThangInfo();
@@ -58,7 +60,8 @@ namespace ObjectMovingUI
                         MessageBox.Show("Đơn giá nhập vào không hợp lệ.");
                 }
                 else
-                {                    
+                {
+                    b.updateBackGround();
                     this.Close();
                 }
             }
@@ -77,7 +80,8 @@ namespace ObjectMovingUI
                         MessageBox.Show("Kiện hàng thêm vào vị trí không hợp lệ.");
                 }
                 else
-                {                    
+                {
+                    b.updateBackGround();
                     this.Close();
                 }
             }
@@ -91,6 +95,7 @@ namespace ObjectMovingUI
         private void delete_Click(object sender, RoutedEventArgs e)
         {
             k.refresh();
+            b.updateBackGround();
             this.Close();
         }
     }

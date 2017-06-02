@@ -20,9 +20,7 @@ namespace ObjectMovingUI
         public const int buttonWidth = 40;
         public const int offset = 50;
         public KButton draggedButton;
-        public KButton droppedButton;
-
-        PopUp mess = new PopUp(new KienHang());
+        public KButton droppedButton;        
 
         protected override void OnClosed(EventArgs e)
         {
@@ -117,7 +115,7 @@ namespace ObjectMovingUI
                 KienHang k = btn.getKienHang();
                 if (k.getWidth() != 0)
                 {                         
-                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang());
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn);
                     if (p != null)
                     {
                         p.kichThuocEdit.Visibility = Visibility.Collapsed;
@@ -126,7 +124,7 @@ namespace ObjectMovingUI
                 }
                 else
                 {
-                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang());
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn);
                     if (p != null)
                     {
                         p.kichThuoc.Visibility = Visibility.Collapsed;
