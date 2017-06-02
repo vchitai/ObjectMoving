@@ -20,7 +20,9 @@ namespace ObjectMovingUI
         public const int buttonWidth = 40;
         public const int offset = 50;
         public KButton draggedButton;
-        public KButton droppedButton;        
+        public KButton droppedButton;
+
+        private List<List<List<KButton>>> list_button; 
 
         protected override void OnClosed(EventArgs e)
         {
@@ -36,6 +38,7 @@ namespace ObjectMovingUI
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             StackPanel sp = new StackPanel();
             sp.Orientation = Orientation.Horizontal;
+            list_button = new List<List<List<KButton>>>();
             for (int k = 0; k < khoHang.getSoLuongKhu(); k++)
             {
                 KhuHang khuHang = khoHang.getKhu(k);
@@ -101,6 +104,8 @@ namespace ObjectMovingUI
                 wp.LayoutTransform = rt;
                 wp.Margin = new Thickness(offset, 0, 0, 0);
                 sp.Children.Add(wp);
+
+                list_button.Add(button_list);
             }
             DrawArea.Content = sp;
 
@@ -123,7 +128,7 @@ namespace ObjectMovingUI
                 KienHang k = btn.getKienHang();
                 if (k.getWidth() != 0)
                 {                         
-                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn);
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn, khoHang);
                     if (p != null)
                     {
                         p.kichThuocEdit.Visibility = Visibility.Collapsed;
@@ -132,7 +137,7 @@ namespace ObjectMovingUI
                 }
                 else
                 {
-                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn);
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn, khoHang);
                     if (p != null)
                     {
                         p.kichThuoc.Visibility = Visibility.Collapsed;
@@ -143,7 +148,7 @@ namespace ObjectMovingUI
             }
             else
             {                
-            }
+            }            
         }
 
         private void Btn_Click(object sender, RoutedEventArgs e)
@@ -187,15 +192,15 @@ namespace ObjectMovingUI
             {
                 droppedButton = (KButton)sender;
                 draggedButton.move(khoHang, droppedButton);
-                draggedButton = null;
+                draggedButton = null;                
             }
         }
 
         //On PageLoad, populate the grid, and set a timer to repeat ever 60 seconds
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+        {            
             RefreshData();
-            SetTimer();
+            SetTimer();            
         }
 
         //Refreshes grid data on timer tick

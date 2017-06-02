@@ -73,6 +73,7 @@ namespace Check
                 for (int j = 0; j < nCol; ++j)
                 {
                     kienHang[i].Add(new KienHang());
+                    kienHang[i][j].setXY(i, j);
                 }
             }
 
@@ -170,6 +171,80 @@ namespace Check
         public float getAngle()
         {
             return gocNghieng;
+        }
+
+        public void loadData(System.IO.StreamReader file)
+        {
+            string line = file.ReadLine();
+            string[] numberArray = line.Split(' ');
+
+            posX = toInt(numberArray[0]);
+            posY = toInt(numberArray[1]);
+            gocNghieng = float.Parse(numberArray[2], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            nCol = toInt(numberArray[3]);
+            nRow = toInt(numberArray[4]);
+            int sl = toInt(numberArray[5]);
+
+            for (int i = 0; i < nRow; ++i)
+                for (int j = 0; j < nCol; ++j)
+                {
+                    kienHang[i][j].refresh();
+                    kienHang[i][j].setXY(i, j);
+                }  
+
+            for (int i = 0; i < sl; ++i)
+            {
+                line = file.ReadLine();
+                string[] dataInfo = line.Split(' ');
+                int temp_n = dataInfo.Length;
+
+                int x = toInt(dataInfo[0]);
+                int y = toInt(dataInfo[1]);
+                int w = toInt(dataInfo[2]);
+                string maKienHang = "";
+                int donGia = 0;
+                Date ngayNhapKho = new Check.Date();
+
+                if (temp_n >= 4)
+                {
+                    maKienHang = dataInfo[3];
+                }
+
+                if (temp_n >= 5)
+                {
+                    donGia = toInt(dataInfo[4]);
+                }
+                if (temp_n >= 6)
+                {
+                    ngayNhapKho = new Check.Date(dataInfo[5]);
+                }
+
+                //KienHang(x, y, ...): (x, y) la vi tri ve len man hinh
+                //luc tinh toan can luu y lai
+                kienHang[x][y].set(x, y, w, maKienHang, donGia, ngayNhapKho);
+                if (w == 2)
+                    kienHang[x][y + 1].set(x, y, -w, maKienHang, donGia, ngayNhapKho);
+            }            
+        }
+
+        public void writeData(System.IO.StreamWriter file)
+        {
+            file.Write(posX + " " + posY + " " + gocNghieng + " " + nCol + " " + nRow);
+            int cnt = 0;
+            for (int i = 0; i < nRow; ++i)
+                for (int j = 0; j < nCol; ++j)
+                    if (kienHang[i][j].getWidth() > 0) cnt = cnt + 1;
+            file.Write(" " + cnt);
+            file.WriteLine("");
+            for (int i = 0; i < nRow; ++i)
+                for(int j = 0; j < nCol; ++j)
+                {
+                    if (kienHang[i][j].getWidth() > 0)
+                    {
+                        kienHang[i][j].writeData(file);
+                        file.WriteLine();
+                    }
+                }                
         }
     }
 }

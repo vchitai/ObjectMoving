@@ -42,7 +42,7 @@ namespace Check
 
         public KhoHang()
         {
-            System.IO.StreamReader file = new System.IO.StreamReader("../../input.txt");
+            System.IO.StreamReader file = new System.IO.StreamReader("../../Resources/input.txt");
             string line = file.ReadLine();
             soLuongKhu = toInt(line);
 
@@ -53,6 +53,32 @@ namespace Check
                 k.docFile(file);
                 khu.Add(k);
             }
+            file.Close();
+        }
+
+        public void loadData()
+        {
+            System.IO.StreamReader file = new System.IO.StreamReader("../../Resources/input.txt");
+            string line = file.ReadLine();
+            soLuongKhu = toInt(line);
+            
+            for (int i = 0; i < soLuongKhu; ++i)
+            {
+                khu[i].loadData(file);
+            }
+            file.Close();
+        }
+
+        public void writeData()
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter("../../Resources/input.txt");
+            file.Write(soLuongKhu);
+            file.WriteLine("");
+            for(int i = 0; i < soLuongKhu; ++i)
+            {
+                khu[i].writeData(file);
+            }
+            file.Close();
         }
 
         public void printOnConsole()

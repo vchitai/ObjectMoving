@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,7 +90,7 @@ namespace Check
             }
             else
             {
-                res = String.Format("{0}/{1}/{2}", ngay, thang, nam);
+                res = String.Format("{0:00}/{1:00}/{2:0000}", ngay, thang, nam);
             }
             return res;
         }
@@ -253,12 +254,22 @@ namespace Check
             else
             {
                 res = String.Format("Độ dài:                  {0}.\n", Math.Abs(width));
-                res = res +         "Ngày nhập kho:     " + ngayNhapKho.getInfo() + ".\n";
+                res = res +         "Ngày nhập kho:    " + ngayNhapKho.getInfo() + ".\n";
                 res = res +         "Mã kiện hàng:       " + maKienHang + ".\n";
                 res = res + String.Format("Đơn giá:                {0}.", donGia);
                 res = res + "\n\nClick chuột phải để chỉnh sửa thông tin kiện hàng.";
             }
             return res;             
+        }
+
+        internal void set(int _x, int _y, int _w, string _maKienHang, int _donGia, Date _ngayNhapKho)
+        {
+            posX = _x;
+            posY = _y;
+            width = _w;
+            maKienHang = _maKienHang;
+            donGia = _donGia;
+            ngayNhapKho = _ngayNhapKho;
         }
 
         public string getWidthInfo()
@@ -274,6 +285,11 @@ namespace Check
         public string getThangInfo()
         {
             return ngayNhapKho.getThangInfo();
+        }
+
+        internal void writeData(StreamWriter file)
+        {
+            file.Write(posX + " " + posY + " " + width + " " + maKienHang + " " + donGia + " " + ngayNhapKho.getInfo());
         }
 
         public string getNamInfo()
@@ -382,7 +398,7 @@ namespace Check
 
         private void setEmpty()
         {
-            posX = posY = width = 0;
+            width = 0;
             maKienHang = "";
             donGia = 0;
             ngayNhapKho = new Date(-1, -1, -1);
@@ -407,6 +423,12 @@ namespace Check
                 left.setEmpty();
             }
             this.setEmpty();   
+        }
+
+        public void setXY(int x, int y)
+        {
+            posX = x;
+            posY = y;
         }
     }
 }

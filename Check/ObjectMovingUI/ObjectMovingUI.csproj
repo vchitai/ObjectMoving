@@ -119,5 +119,8 @@
   <ItemGroup>
     <None Include="Resources\BoxTail.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\input.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

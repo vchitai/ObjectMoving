@@ -19,15 +19,17 @@ namespace ObjectMovingUI
     /// Interaction logic for PopUp.xaml
     /// </summary>
     public partial class PopUp : Window
-    {        
+    {
+        private KhoHang khoHang;
         private KienHang k;
         private KButton b;
 
-        public PopUp(KienHang kienHang, KButton _b)
+        public PopUp(KienHang kienHang, KButton _b, KhoHang _khoHang)
         {            
             InitializeComponent();
             k = kienHang;
             b = _b;
+            khoHang = _khoHang;
             this.kichThuoc.Text = kienHang.getWidthInfo();
             this.ngay.Text = kienHang.getNgayInfo();
             this.thang.Text = kienHang.getThangInfo();
@@ -63,6 +65,7 @@ namespace ObjectMovingUI
                 {
                     b.updateBackGround();
                     this.Close();
+                    khoHang.writeData();
                 }
             }
             else
@@ -83,6 +86,7 @@ namespace ObjectMovingUI
                 {
                     b.updateBackGround();
                     this.Close();
+                    khoHang.writeData();
                 }
             }
         }
@@ -97,6 +101,7 @@ namespace ObjectMovingUI
             k.refresh();
             b.updateBackGround();
             this.Close();
+            khoHang.writeData();            
         }
     }
 }
