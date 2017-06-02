@@ -192,7 +192,8 @@ namespace ObjectMovingUI
             {
                 droppedButton = (KButton)sender;
                 draggedButton.move(khoHang, droppedButton);
-                draggedButton = null;                
+                draggedButton = null;
+                khoHang.writeData();
             }
         }
 
