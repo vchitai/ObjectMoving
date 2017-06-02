@@ -50,6 +50,16 @@ namespace ObjectMovingUI
             right = b;
         }
 
+        public KButton getLeft()
+        {
+            return left;
+        }
+
+        public KButton getRight()
+        {
+            return right;
+        }
+
         public void setBackGround(int id)
         {
             if (id == 0)

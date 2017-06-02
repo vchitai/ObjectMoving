@@ -62,6 +62,7 @@ namespace ObjectMovingUI
                         btn.Click += Btn_Click;
                         btn.MouseDown += Btn_MouseDown;
                         btn.MouseEnter += Btn_MouseEnter;
+                        btn.MouseLeave += Btn_MouseLeave;
                         btn.setBackGround(khuHang.get(i, j).getWidth());
                         btn.AllowDrop = true;
                         btn.PreviewMouseMove += Btn_PreviewMouseMove;
@@ -106,6 +107,13 @@ namespace ObjectMovingUI
             DrawArea.Loaded += Page_Loaded;
         }
 
+        private void Btn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            KButton btn = e.Source as KButton;
+
+            btn.updateBackGround();
+        }
+
         private void Btn_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             KButton btn = e.Source as KButton;
@@ -140,14 +148,26 @@ namespace ObjectMovingUI
 
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
-            KButton btn = e.Source as KButton;            
+            KButton btn = e.Source as KButton;       
+            
+                 
         }
 
         private void Btn_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             KButton btn = e.Source as KButton;            
 
-            btn.ToolTip = btn.getInfo();                        
+            btn.ToolTip = btn.getInfo();
+
+            btn.Background = Brushes.LightBlue;     
+            if (btn.getKienHang().getWidth() == -2)
+            {
+                btn.getLeft().Background = Brushes.LightBlue;                
+            }
+            if (btn.getKienHang().getWidth() == 2)
+            {
+                btn.getRight().Background = Brushes.LightBlue;                
+            }
         }
 
         private void Btn_PreviewMouseMove(object sender, MouseEventArgs e)
