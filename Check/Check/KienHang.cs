@@ -387,6 +387,14 @@ namespace Check
             donGia = 0;
             ngayNhapKho = new Date(-1, -1, -1);
         }
+        
+        public void copy(KienHang k)
+        {
+            width = k.width;
+            maKienHang = k.maKienHang;
+            donGia = k.donGia;
+            ngayNhapKho = k.ngayNhapKho;
+        }
 
         public void refresh()
         {

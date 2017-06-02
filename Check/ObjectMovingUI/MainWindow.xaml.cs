@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ObjectMovingUI
 {
@@ -18,8 +19,16 @@ namespace ObjectMovingUI
         public const int buttonHeight = 20;
         public const int buttonWidth = 40;
         public const int offset = 50;
+        public KButton draggedButton;
+        public KButton droppedButton;
 
         PopUp mess = new PopUp(new KienHang());
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            App.Current.Shutdown();
+        }
 
         public MainWindow()
         {
@@ -47,7 +56,7 @@ namespace ObjectMovingUI
                     button_list.Add(new List<KButton>());
                     for(int j = 0; j < col; ++j)
                     {
-                        KButton btn = new KButton(khuHang.get(i, j));
+                        KButton btn = new KButton(k + 1, i, j, khuHang.get(i, j));
                         btn.FontSize += 10;
                         btn.Height = buttonHeight;
                         btn.Width = buttonWidth;
@@ -55,9 +64,10 @@ namespace ObjectMovingUI
                         btn.Click += Btn_Click;
                         btn.MouseDown += Btn_MouseDown;
                         btn.MouseEnter += Btn_MouseEnter;
-
                         btn.setBackGround(khuHang.get(i, j).getWidth());
-
+                        btn.AllowDrop = true;
+                        btn.PreviewMouseMove += Btn_PreviewMouseMove;
+                        btn.Drop += Btn_Drop;
                         button_list[i].Add(btn);
                     }
                 }
@@ -94,6 +104,8 @@ namespace ObjectMovingUI
                 sp.Children.Add(wp);
             }
             DrawArea.Content = sp;
+
+            DrawArea.Loaded += Page_Loaded;
         }
 
         private void Btn_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -139,6 +151,54 @@ namespace ObjectMovingUI
 
             btn.ToolTip = btn.getInfo();                        
         }
-       
+
+        private void Btn_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                draggedButton = (KButton)sender;
+                int x = 0;
+                DragDrop.DoDragDrop((KButton)sender, x, DragDropEffects.All);
+                e.Handled = true;
+            }
+        }
+
+        private void Btn_Drop(object sender, DragEventArgs e)
+        {
+            if (draggedButton != null)
+            {
+                droppedButton = (KButton)sender;
+                draggedButton.move(khoHang, droppedButton);
+                draggedButton = null;
+            }
+        }
+
+        //On PageLoad, populate the grid, and set a timer to repeat ever 60 seconds
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            RefreshData();
+            SetTimer();
+        }
+
+        //Refreshes grid data on timer tick
+        protected void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        //Get data and bind to the grid
+        private void RefreshData()
+        {
+            DrawArea.InvalidateVisual();
+        }
+
+        //Set and start the timer
+        private void SetTimer()
+        {
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 20);
+            dispatcherTimer.Start();
+        }
     }
 }

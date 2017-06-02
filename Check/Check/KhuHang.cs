@@ -149,7 +149,7 @@ namespace Check
 
         public void set(int x, int y, KienHang k)
         {
-            kienHang[x][y] = k;
+            kienHang[x][y].copy(k);
         }
 
         public KienHang get(int x, int y)

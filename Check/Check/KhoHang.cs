@@ -89,8 +89,8 @@ namespace Check
                 if (khu[new_k].get(new_x, new_y + 1).getWidth() != 0) return -1;                
                 khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
                 khu[new_k].set(new_x, new_y + 1, khu[pre_k].get(pre_x, pre_y + 1));
-                khu[pre_k].set(pre_x, pre_y, new KienHang());
-                khu[pre_k].set(pre_x, pre_y + 1, new KienHang());
+                khu[pre_k].get(pre_x, pre_y).refresh();
+                khu[pre_k].get(pre_x, pre_y + 1).refresh();
             }
             if (w1 == -2)
             {
@@ -98,13 +98,13 @@ namespace Check
                 if (khu[new_k].get(new_x, new_y - 1).getWidth() != 0) return -1;
                 khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
                 khu[new_k].set(new_x, new_y - 1, khu[pre_k].get(pre_x, pre_y - 1));
-                khu[pre_k].set(pre_x, pre_y, new KienHang());
-                khu[pre_k].set(pre_x, pre_y - 1, new KienHang());
+                khu[pre_k].get(pre_x, pre_y).refresh();
+                khu[pre_k].get(pre_x, pre_y - 1).refresh();
             }
             if (w1 == 1)
             {
                 khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
-                khu[pre_k].set(pre_x, pre_y, new KienHang());                
+                khu[pre_k].get(pre_x, pre_y).refresh();
             }            
 
             return 1;
