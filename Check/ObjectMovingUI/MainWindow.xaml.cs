@@ -54,7 +54,7 @@ namespace ObjectMovingUI
             startPos.IsReadOnly = false;
             endPos.IsReadOnly = false;
 
-            //KhoHang.downloadFile();
+            KhoHang.downloadFile();
             khoHang = new KhoHang();
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -254,12 +254,14 @@ namespace ObjectMovingUI
         protected void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             KhoHang.downloadFile();
+            khoHang.loadData();
             foreach (var lv1 in list_button)
             {
                 foreach (var lv2 in lv1)
                 {
                     foreach (KButton k in lv2)
-                        k.updateBackGround();
+                        if (k.Background != Brushes.LightBlue)
+                            k.updateBackGround();
                 }
             }
             RefreshData();

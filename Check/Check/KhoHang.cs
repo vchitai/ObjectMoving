@@ -197,7 +197,19 @@ namespace Check
 
         public void loadData()
         {
-            System.IO.StreamReader file = new System.IO.StreamReader("../../Resources/input.txt");
+            System.IO.StreamReader file;
+            try
+            {
+                file = new System.IO.StreamReader("../../Resources/input.txt");
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return;
+            }
             string line = file.ReadLine();
             soLuongKhu = toInt(line);
             
@@ -210,7 +222,19 @@ namespace Check
 
         public void writeData()
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter("../../Resources/input.txt");
+            System.IO.StreamWriter file;
+            try
+            {
+                file = new System.IO.StreamWriter("../../Resources/input.txt");
+            }                        
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return;
+            }
             file.Write(soLuongKhu);
             file.WriteLine("");
             for(int i = 0; i < soLuongKhu; ++i)
