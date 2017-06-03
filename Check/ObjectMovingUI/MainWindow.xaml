@@ -19,31 +19,30 @@
             <ColumnDefinition Width="259*"/>
         </Grid.ColumnDefinitions>
         <Menu Grid.Column="0" Grid.Row="0" Background="White" Grid.ColumnSpan="2">
-            <MenuItem Header="_File">
-                <MenuItem Header="_Open"/>
-                <MenuItem Header="_Close"/>
-                <MenuItem Header="_Save"/>
+            <MenuItem Header="_Tập tin">
+                <MenuItem Header="_Mở" Click="open_Click"/>
+                <MenuItem Header="_Lưu" Click="save_Click"/>
+                <MenuItem Header="_Thoát" Click="quit_Click"/>
             </MenuItem>
-            <MenuItem Header="_Zoom">
+            <MenuItem Header="_Phóng to">
                 <MenuItem Header="_Kho 1"/>
                 <MenuItem Header="_Kho 2"/>
                 <MenuItem Header="_Kho 3"/>
             </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="_Contact"/>
-                <MenuItem Header="_Support"/>
+            <MenuItem Header="_Trợ giúp">
+                <MenuItem Header="_Hướng dẫn" Click="guide_Click"/>
             </MenuItem>
         </Menu>
 
         <ScrollViewer Grid.ColumnSpan="3" Grid.Row="1"  x:Name="DrawArea" Background="Azure"/>
-        <StackPanel  Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="2">
-            <Label x:Name="textBlock1" HorizontalAlignment="Left" Content="From:" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+        <DockPanel  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Label x:Name="textBlock1" HorizontalAlignment="Left" Content="Từ:" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox x:Name="startPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="73" VerticalContentAlignment="Center" Text="[k0] (x0, y0)" Margin="0,6"/>
-            <Label x:Name="textBlock1_Copy" HorizontalAlignment="Left" VerticalAlignment="Center" Content="To:" VerticalContentAlignment="Center"/>
+            <Label x:Name="textBlock1_Copy" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Đến:" VerticalContentAlignment="Center"/>
             <TextBox x:Name="endPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="68" VerticalContentAlignment="Center" Text="[k1] (x1, y1)"/>
-            <Button x:Name="move" Content="Move" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightPink" ToolTip="Di chuyen hang tu vi tri nguon den vi tri dich" Margin="10,6,0,6" Padding="5, 0, 5, 0" Click="move_Click"/>
-            <CheckBox x:Name="isOnline" Content="Online" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="" Margin="10,6,0,6" Padding="5, 0, 5, 0" IsTabStop="False" IsHitTestVisible="True"/>
-        </StackPanel>
-        <Label Grid.Row="2" Grid.Column="2" Content="Zoom box aka Slider to Zoom"/>
+            <Button x:Name="move" Content="Di chuyển" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightPink" ToolTip="Di chuyển hàng từ vị trí nguồn đến vị trí đích" Margin="10,6,0,6" Padding="5, 0, 5, 0" Click="move_Click"/>
+            <CheckBox x:Name="isOnline" Content="Trực tuyến" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="" Margin="10,6,0,6" Padding="5, 0, 5, 0" IsTabStop="False" IsHitTestVisible="True"/>
+        </DockPanel>
+        <Label Grid.Row="2" Grid.Column="2" Margin="20, 0, 0, 0" Content="Zoom box aka Slider to Zoom" VerticalContentAlignment="Center"/>
     </Grid>
 </Window>

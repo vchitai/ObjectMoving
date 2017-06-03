@@ -32,7 +32,7 @@ namespace ObjectMovingUI
             b = _b;
             khoHang = _khoHang;
             isOn = isOnline;
-            this.kichThuoc.Text = kienHang.getWidthInfo();
+            this.kichThuoc.Content = kienHang.getWidthInfo();
             this.ngay.Text = kienHang.getNgayInfo();
             this.thang.Text = kienHang.getThangInfo();
             this.nam.Text = kienHang.getNamInfo();
@@ -43,7 +43,7 @@ namespace ObjectMovingUI
         public void set(KienHang kienHang)
         {
             k = kienHang;
-            this.kichThuoc.Text = kienHang.getWidthInfo();
+            this.kichThuoc.Content = kienHang.getWidthInfo();
             this.ngay.Text = kienHang.getNgayInfo();
             this.thang.Text = kienHang.getThangInfo();
             this.nam.Text = kienHang.getNamInfo();

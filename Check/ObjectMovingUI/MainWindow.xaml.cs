@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Threading;
-
+using System.IO;
 
 namespace ObjectMovingUI
 {
@@ -16,13 +16,15 @@ namespace ObjectMovingUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public KhoHang khoHang;
-        public const int buttonHeight = 20;
-        public const int buttonWidth = 40;
-        public const int offset = 200;
-        public KButton draggedButton;
-        public KButton droppedButton;
+        private KhoHang khoHang;
+        private const int buttonHeight = 20;
+        private const int buttonWidth = 40;
+        private const int offset = 200;
+        private StackPanel sp;
+        private KButton draggedButton;
+        private KButton droppedButton;
         private string title = "Hệ thống quản lý kho hàng";
+        private string guideFile = "../../Resources/Guide.txt";
         private Uri iconUri = new Uri("Resources/ico.png", UriKind.Relative);
 
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
@@ -56,11 +58,18 @@ namespace ObjectMovingUI
 
             if (isOnline.IsChecked == true)
                 KhoHang.downloadFile();
-            khoHang = new KhoHang();
+            GenerateMap();
+        }
+
+        private void GenerateMap(string fileName = "../../Resources/input.txt")
+        {
+            khoHang = new KhoHang(fileName);
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            StackPanel sp = new StackPanel();
+            sp = new StackPanel();
             sp.Orientation = Orientation.Horizontal;
+            if (list_button != null)
+                list_button.Clear();
             list_button = new List<List<List<KButton>>>();
             for (int k = 0; k < khoHang.getSoLuongKhu(); k++)
             {
@@ -68,7 +77,7 @@ namespace ObjectMovingUI
                 WrapPanel wp = new WrapPanel();
                 int row = khuHang.getNRow();
                 int col = khuHang.getNCol();
-                wp.Height = buttonHeight * (row+1);
+                wp.Height = buttonHeight * (row + 1);
                 wp.Width = buttonWidth * col;
 
                 List<List<KButton>> button_list;
@@ -77,15 +86,15 @@ namespace ObjectMovingUI
                 Label khuHangName = new Label();
                 khuHangName.Height = buttonHeight;
                 khuHangName.Width = wp.Width;
-                khuHangName.Content = "Khu hàng " + (k+1).ToString();
+                khuHangName.Content = "Khu hàng " + (k + 1).ToString();
                 khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
                 khuHangName.Padding = new Thickness(0, 0, 0, 0);
 
                 wp.Children.Add(khuHangName);
-                for(int i = 0; i < row; ++i)
+                for (int i = 0; i < row; ++i)
                 {
                     button_list.Add(new List<KButton>());
-                    for(int j = 0; j < col; ++j)
+                    for (int j = 0; j < col; ++j)
                     {
                         KButton btn = new KButton(k + 1, i, j, khuHang.get(i, j));
                         btn.FontSize += 10;
@@ -106,7 +115,7 @@ namespace ObjectMovingUI
                 }
 
                 for (int i = 0; i < row; ++i)
-                {                    
+                {
                     for (int j = 0; j < col; ++j)
                     {
                         if (j == 0)
@@ -124,7 +133,7 @@ namespace ObjectMovingUI
                 for (int i = 0; i < row; i++)
                 {
                     for (int j = 0; j < col; j++)
-                    {                        
+                    {
                         wp.Children.Add(button_list[i][j]);
                     }
                 }
@@ -245,19 +254,19 @@ namespace ObjectMovingUI
                     KhoHang.uploadFile();
             }
         }
-
-        //On PageLoad, populate the grid, and set a timer to repeat ever 60 seconds
+        
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {            
             RefreshData();                  
         }
-
-        //Refreshes grid data on timer tick
+        
         protected void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             if (isOnline.IsChecked == true)
+            {
                 KhoHang.downloadFile();
-            khoHang.loadData();
+                khoHang.loadData();
+            }
             foreach (var lv1 in list_button)
             {
                 foreach (var lv2 in lv1)
@@ -269,8 +278,7 @@ namespace ObjectMovingUI
             }
             RefreshData();
         }
-
-        //Get data and bind to the grid
+        
         private void RefreshData()
         {
             DrawArea.InvalidateVisual();
@@ -292,6 +300,77 @@ namespace ObjectMovingUI
             if (isOnline.IsChecked == true)
                 KhoHang.uploadFile();
         }       
+
+        public void open_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog 
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "Text Files (*.txt)|*.txt";
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                // Open document 
+                string filename = dlg.FileName;
+                GenerateMap(filename);
+                isOnline.Visibility = Visibility.Hidden;
+                DrawArea.InvalidateVisual();
+            }
+        }
+
+        public void save_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog 
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                // Open document 
+                string filename = dlg.FileName;
+                khoHang.saveTo(filename);
+            }
+        }
+
+        public void quit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        
+        public void guide_Click(object sender, RoutedEventArgs e)
+        {
+            StreamReader file;
+            try
+            {
+                file = new StreamReader(guideFile);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return;
+            }
+
+            MessageBox.Show(file.ReadToEnd(), "Hướng dẫn sử dụng");
+
+        }
     }
     
 }

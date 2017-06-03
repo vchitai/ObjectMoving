@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Net;
 using System.IO;
-using System.Text;
 
 namespace Check
 {
@@ -14,6 +11,7 @@ namespace Check
     {
         private int soLuongKhu;
         private List<KhuHang> khu;
+        private string inputOfflineFile = "../../Resources/input.txt";
 
         public int getSoLuongKhu()
         {
@@ -44,9 +42,10 @@ namespace Check
             return res;
         }
 
-        public KhoHang()
+        public KhoHang(string fileName = "../../Resources/input.txt")
         {
-            System.IO.StreamReader file = new System.IO.StreamReader("../../Resources/input.txt");
+            inputOfflineFile = fileName;
+            StreamReader file = new StreamReader(fileName);
             string line = file.ReadLine();
             soLuongKhu = toInt(line);
 
@@ -197,10 +196,10 @@ namespace Check
 
         public void loadData()
         {
-            System.IO.StreamReader file;
+            StreamReader file;
             try
             {
-                file = new System.IO.StreamReader("../../Resources/input.txt");
+                file = new StreamReader(inputOfflineFile);
             }
             catch (IOException)
             {
@@ -228,7 +227,7 @@ namespace Check
             System.IO.StreamWriter file;
             try
             {
-                file = new System.IO.StreamWriter("../../Resources/input.txt");
+                file = new System.IO.StreamWriter(inputOfflineFile);
             }                        
             catch (IOException)
             {
@@ -338,7 +337,7 @@ namespace Check
 
         public static void uploadFile()
         {
-            // Get the object used to communicate with the server.  
+            // Rename
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://objectmoving.esy.es/input.txt");
             request.Credentials = new NetworkCredential("u288570171", "3781159");
             request.Method = WebRequestMethods.Ftp.Rename;
@@ -352,11 +351,9 @@ namespace Check
             {
                 return;
             }
-
+            //Upload
             request = (FtpWebRequest)WebRequest.Create("ftp://objectmoving.esy.es/input.txt");
             request.Method = WebRequestMethods.Ftp.UploadFile;
-
-            // This example assumes the FTP site uses anonymous logon.  
             request.Credentials = new NetworkCredential("u288570171", "3781159");
 
             // Copy the contents of the file to the request stream.  
@@ -380,6 +377,30 @@ namespace Check
             }
 
             response.Close();
+        }
+
+        public void saveTo(string fileName)
+        {
+            System.IO.StreamWriter file;
+            try
+            {
+                file = new System.IO.StreamWriter(fileName);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return;
+            }
+            file.Write(soLuongKhu);
+            file.WriteLine("");
+            for (int i = 0; i < soLuongKhu; ++i)
+            {
+                khu[i].writeData(file);
+            }
+            file.Close();
         }
     }
 }
