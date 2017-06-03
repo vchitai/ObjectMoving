@@ -7,9 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Net;
-using System.IO;
-using System.Text;
+
 
 namespace ObjectMovingUI
 {
@@ -27,11 +25,13 @@ namespace ObjectMovingUI
         private string title = "Hệ thống quản lý kho hàng";
         private Uri iconUri = new Uri("Resources/ico.png", UriKind.Relative);
 
+        private TextBox selTb = null;
+
         private List<List<List<KButton>>> list_button; 
 
         protected override void OnClosed(EventArgs e)
         {
-            uploadFile();
+            KhoHang.uploadFile();
             base.OnClosed(e);
             App.Current.Shutdown();
         }
@@ -41,8 +41,13 @@ namespace ObjectMovingUI
             InitializeComponent();
             this.Title = title;
             this.Icon = BitmapFrame.Create(new BitmapImage(iconUri));
+            
+            startPos.GotMouseCapture += StartPos_GotMouseCapture;
+            endPos.GotMouseCapture += EndPos_GotMouseCapture;
+            startPos.IsReadOnly = false;
+            endPos.IsReadOnly = false;
 
-            downloadFile();
+            KhoHang.downloadFile();
             khoHang = new KhoHang();
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -81,6 +86,7 @@ namespace ObjectMovingUI
                         btn.Content = btn.Name;
                         btn.Click += Btn_Click;
                         btn.MouseDown += Btn_MouseDown;
+                        btn.GotMouseCapture += Btn_GotMouseCapture;
                         btn.MouseEnter += Btn_MouseEnter;
                         btn.MouseLeave += Btn_MouseLeave;
                         btn.setBackGround(khuHang.get(i, j).getWidth());
@@ -127,6 +133,24 @@ namespace ObjectMovingUI
             DrawArea.Content = sp;
 
             DrawArea.Loaded += Page_Loaded;
+        }
+
+        private void Btn_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (selTb != null)
+                selTb.Text = ((KButton)sender).getPos();
+        }
+
+        private void EndPos_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            selTb = (TextBox)sender;
+            selTb.Text = "";
+        }
+
+        private void StartPos_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            selTb = (TextBox)sender;
+            selTb.Text = "";
         }
 
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
@@ -209,6 +233,7 @@ namespace ObjectMovingUI
                 draggedButton.move(khoHang, droppedButton);
                 draggedButton = null;
                 khoHang.writeData();
+                KhoHang.uploadFile();
             }
         }
 
@@ -238,56 +263,22 @@ namespace ObjectMovingUI
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 20);
             dispatcherTimer.Start();
-        }
+        }        
 
-        private void downloadFile()
+        private void move_Click(object sender, RoutedEventArgs e)
         {
-            // Get the object used to communicate with the server.  
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            // This example assumes the FTP site uses anonymous logon.  
-            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
-
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
-            Stream responseStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(responseStream);
-            StreamWriter file = new StreamWriter("../../Resources/input.txt");
-            file.Write(reader.ReadToEnd());
-
-            file.Close();
-            reader.Close();
-            response.Close();
-        }
-
-        private void uploadFile()
-        {
-            // Get the object used to communicate with the server.  
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
-            request.Method = WebRequestMethods.Ftp.Rename;
-            request.RenameTo = "/htdocs/input2.txt";
-            request.GetResponse();
-
-            request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-
-            // This example assumes the FTP site uses anonymous logon.  
-            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
-
-            // Copy the contents of the file to the request stream.  
-            StreamReader sourceStream = new StreamReader("../../Resources/input.txt");
-            byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
-            sourceStream.Close();
-            request.ContentLength = fileContents.Length;
-
-            Stream requestStream = request.GetRequestStream();
-            requestStream.Write(fileContents, 0, fileContents.Length);
-            requestStream.Close();
-
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
-            response.Close();
+            string command = "M " + startPos.Text + " " + endPos.Text;
+            khoHang.moveByCommand(command);
+            foreach (var lv1 in list_button)
+            {
+                foreach (var lv2 in lv1)
+                {
+                    foreach (KButton k in lv2)
+                        k.updateBackGround();
+                }
+            }
+            khoHang.writeData();
+            KhoHang.uploadFile();
         }
     }
     

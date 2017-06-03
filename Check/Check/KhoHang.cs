@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Net;
+using System.IO;
+using System.Text;
 
 namespace Check
 {
@@ -55,6 +59,141 @@ namespace Check
             }
             file.Close();
         }
+
+        static public string Remove(string s, char ch)
+        {
+            while (s.Length > 0 && s[0] != ch)
+            {
+                s = s.Remove(0, 1);
+            }
+            if (s.Length > 0) s = s.Remove(0, 1);
+            return s;
+        }
+
+        public void moveByCommand(string temp_line)
+        {
+            string line = "";
+            for (int i = 0; i < temp_line.Length; ++i)
+            {
+                if (temp_line[i] == ' ') continue;
+                line = line + temp_line[i];
+            }
+            bool ok = false;
+
+            int p = 0;
+            int x = 0;
+            int y = 0;
+            int k = 0;
+            int u = 0;
+            int v = 0;
+
+            do
+            {
+                if (line[0] != 'M') break;
+
+                line = Remove(line, '[');
+                if (line.Length == 0) break;
+
+                string temp = "";
+                while (line.Length > 0 && line[0] != ']')
+                {
+                    temp = temp + line[0];
+                    line = line.Remove(0, 1);
+                }
+                if (line.Length > 0) line = line.Remove(0, 1);
+                p = toInt(temp);
+                if (p == -1 || line.Length == 0) break;
+
+                line = Remove(line, '(');
+                temp = "";
+                while (line.Length > 0 && line[0] != ',')
+                {
+                    temp = temp + line[0];
+                    line = line.Remove(0, 1);
+                }
+                if (line.Length > 0) line = line.Remove(0, 1);
+                x = toInt(temp);
+                if (x == -1 || line.Length == 0) break;
+
+                temp = "";
+                while (line.Length > 0 && line[0] != ')')
+                {
+                    temp = temp + line[0];
+                    line = line.Remove(0, 1);
+                }
+                if (line.Length > 0) line = line.Remove(0, 1);
+                y = toInt(temp);
+                if (y == -1 || line.Length == 0) break;
+
+                line = Remove(line, '[');
+                if (line.Length == 0) break;
+
+                temp = "";
+                while (line.Length > 0 && line[0] != ']')
+                {
+                    temp = temp + line[0];
+                    line = line.Remove(0, 1);
+                }
+                if (line.Length > 0) line = line.Remove(0, 1);
+                k = toInt(temp);
+                if (p == -1 || line.Length == 0) break;
+
+                line = Remove(line, '(');
+                temp = "";
+                while (line.Length > 0 && line[0] != ',')
+                {
+                    temp = temp + line[0];
+                    line = line.Remove(0, 1);
+                }
+                if (line.Length > 0) line = line.Remove(0, 1);
+                u = toInt(temp);
+                if (u == -1 || line.Length == 0) break;
+
+                temp = "";
+                while (line.Length > 0 && line[0] != ')')
+                {
+                    temp = temp + line[0];
+                    line = line.Remove(0, 1);
+                }
+                if (line.Length > 0) line = line.Remove(0, 1);
+                v = toInt(temp);
+                if (v == -1) break;
+
+                ok = true;
+                break;
+            } while (true);
+
+            if (!ok)
+            {
+                MessageBox.Show("Nhập sai cú pháp (đề nghị chọn ô xuất phát và ô kết thúc.");
+            }
+            else
+            {
+                if (p < 1 || p > soLuongKhu)
+                {
+                    MessageBox.Show("Khu hàng nguồn không tồn tại.");
+                    return;
+                }
+                if (k < 1 || k > soLuongKhu)
+                {
+                    MessageBox.Show("Khu hàng đích không tồn tại.");
+                    return;
+                }
+                int kq = this.Move(p, x, y, k, u, v);
+                if (kq == -1)
+                    MessageBox.Show("Tồn tại hàng ở đích đến.");
+                else
+                    if (kq == -2)
+                    MessageBox.Show("Không có hàng ở ô xuất phát.");
+                else
+                    if (kq == -3)
+                    MessageBox.Show("Tọa độ vượt giới hạn của khu hàng.");
+                else
+                {
+                }
+            }
+        }
+
 
         public void loadData()
         {
@@ -151,6 +290,56 @@ namespace Check
             }            
 
             return 1;
-        }        
+        }
+
+        public static void downloadFile()
+        {
+            // Get the object used to communicate with the server.  
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            // This example assumes the FTP site uses anonymous logon.  
+            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
+
+            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+            Stream responseStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(responseStream);
+            StreamWriter file = new StreamWriter("../../Resources/input.txt");
+            file.Write(reader.ReadToEnd());
+
+            file.Close();
+            reader.Close();
+            response.Close();
+        }
+
+        public static void uploadFile()
+        {
+            // Get the object used to communicate with the server.  
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            request.Method = WebRequestMethods.Ftp.Rename;
+            request.RenameTo = "/htdocs/input2.txt";
+            request.GetResponse();
+
+            request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+
+            // This example assumes the FTP site uses anonymous logon.  
+            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
+
+            // Copy the contents of the file to the request stream.  
+            StreamReader sourceStream = new StreamReader("../../Resources/input.txt");
+            byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
+            sourceStream.Close();
+            request.ContentLength = fileContents.Length;
+
+            Stream requestStream = request.GetRequestStream();
+            requestStream.Write(fileContents, 0, fileContents.Length);
+            requestStream.Close();
+
+            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+            response.Close();
+        }
     }
 }

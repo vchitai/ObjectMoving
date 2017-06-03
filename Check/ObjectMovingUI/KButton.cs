@@ -113,6 +113,10 @@ namespace ObjectMovingUI
                 b.right.setBackGround(b.right.kienHang.getWidth());
         }
 
+        public string getPos()
+        {
+            return String.Format("[{0}] ({1},{2})", khu, x, y);
+        }
     }
        
 }

@@ -66,6 +66,7 @@ namespace ObjectMovingUI
                     b.updateBackGround();
                     this.Close();
                     khoHang.writeData();
+                    KhoHang.uploadFile();
                 }
             }
             else
@@ -87,6 +88,7 @@ namespace ObjectMovingUI
                     b.updateBackGround();
                     this.Close();
                     khoHang.writeData();
+                    KhoHang.uploadFile();
                 }
             }
         }
@@ -101,7 +103,8 @@ namespace ObjectMovingUI
             k.refresh();
             b.updateBackGround();
             this.Close();
-            khoHang.writeData();            
+            khoHang.writeData();
+            KhoHang.uploadFile();
         }
     }
 }

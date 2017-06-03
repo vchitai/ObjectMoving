@@ -37,10 +37,10 @@
         <ScrollViewer Grid.ColumnSpan="2" Grid.Row="1"  x:Name="DrawArea" Background="Azure"/>
         <StackPanel  Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
             <Label x:Name="textBlock1" HorizontalAlignment="Left" Content="From:" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="startPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="50" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="startPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="73" VerticalContentAlignment="Center" Text="[k0] (x0, y0)" Margin="0,6"/>
             <Label x:Name="textBlock1_Copy" HorizontalAlignment="Left" VerticalAlignment="Center" Content="To:" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="endPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="50" VerticalContentAlignment="Center"/>
-            <Button x:Name="move" Content="Move" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightPink" ToolTip="Di chuyen hang tu vi tri nguon den vi tri dich" Margin="10, 0, 0, 0" Padding="5, 0, 5, 0"/>
+            <TextBox x:Name="endPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="68" VerticalContentAlignment="Center" Text="[k1] (x1, y1)"/>
+            <Button x:Name="move" Content="Move" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightPink" ToolTip="Di chuyen hang tu vi tri nguon den vi tri dich" Margin="10,6,0,6" Padding="5, 0, 5, 0" Click="move_Click"/>
         </StackPanel>
         <Label Grid.Row="2" Grid.Column="1" Content="Zoom box aka Slider to Zoom"/>
     </Grid>
