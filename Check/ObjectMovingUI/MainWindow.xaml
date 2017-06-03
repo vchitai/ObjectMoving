@@ -5,25 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ObjectMovingUI"
         mc:Ignorable="d"
+        WindowState="Maximized"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="28" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Content="Object Moving GUI Project"/>
-        <ScrollViewer Grid.Row="1" Grid.Column="0" x:Name="DrawArea" BorderBrush="Black" BorderThickness="5" Background="LightPink"/>
-        <Label Grid.Row="2" Grid.Column="0" Content="Zoom box aka Slider to Zoom"/>
-        <StackPanel Margin="20, 5, 0, 0" Grid.Column="1" Grid.RowSpan="3">
-            <Label Content="Features"/>
-            <Label Content="The fuck"/>
-            <Label Content="The fuck"/>
-            <Label Content="Another fuck"/>
-        </StackPanel>
+        <Menu Grid.Column="0" Grid.Row="0" Background="White">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open"/>
+                <MenuItem Header="_Close"/>
+                <MenuItem Header="_Save"/>
+            </MenuItem>
+            <MenuItem Header="_Zoom">
+                <MenuItem Header="_Kho 1"/>
+                <MenuItem Header="_Kho 2"/>
+                <MenuItem Header="_Kho 3"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Contact"/>
+                <MenuItem Header="_Support"/>
+            </MenuItem>
+        </Menu>
+
+        <ScrollViewer Grid.Column="0" Grid.Row="1"  x:Name="DrawArea" Background="Azure"/>
+        
+        <Label Grid.Row="2" Grid.ColumnSpan="2" Content="Zoom box aka Slider to Zoom"/>
     </Grid>
 </Window>

@@ -18,9 +18,11 @@ namespace ObjectMovingUI
         public KhoHang khoHang;
         public const int buttonHeight = 20;
         public const int buttonWidth = 40;
-        public const int offset = 50;
+        public const int offset = 200;
         public KButton draggedButton;
         public KButton droppedButton;
+        private string title = "Hệ thống quản lý kho hàng";
+        private Uri iconUri = new Uri("Resources/ico.png", UriKind.Relative);
 
         private List<List<List<KButton>>> list_button; 
 
@@ -33,6 +35,9 @@ namespace ObjectMovingUI
         public MainWindow()
         {
             InitializeComponent();
+            this.Title = title;
+            this.Icon = BitmapFrame.Create(new BitmapImage(iconUri));
+
             khoHang = new KhoHang();
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -45,13 +50,20 @@ namespace ObjectMovingUI
                 WrapPanel wp = new WrapPanel();
                 int row = khuHang.getNRow();
                 int col = khuHang.getNCol();
-                wp.Height = buttonHeight * row;
+                wp.Height = buttonHeight * (row+1);
                 wp.Width = buttonWidth * col;
 
                 List<List<KButton>> button_list;
 
                 button_list = new List<List<ObjectMovingUI.KButton>>();
+                Label khuHangName = new Label();
+                khuHangName.Height = buttonHeight;
+                khuHangName.Width = wp.Width;
+                khuHangName.Content = "Khu hàng " + (k+1).ToString();
+                khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
+                khuHangName.Padding = new Thickness(0, 0, 0, 0);
 
+                wp.Children.Add(khuHangName);
                 for(int i = 0; i < row; ++i)
                 {
                     button_list.Add(new List<KButton>());
@@ -147,15 +159,13 @@ namespace ObjectMovingUI
                 }
             }
             else
-            {                
+            {        
             }            
         }
 
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
-            KButton btn = e.Source as KButton;       
-            
-                 
+            KButton btn = e.Source as KButton;
         }
 
         private void Btn_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

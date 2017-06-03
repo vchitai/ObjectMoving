@@ -122,5 +122,13 @@
   <ItemGroup>
     <Resource Include="Resources\input.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ico.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

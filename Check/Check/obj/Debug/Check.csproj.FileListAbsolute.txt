@@ -4,15 +4,14 @@ C:\Users\Vinh Ton That\Desktop\Check\Check\bin\Debug\Check.pdb
 C:\Users\Vinh Ton That\Desktop\Check\Check\obj\Debug\Check.exe
 C:\Users\Vinh Ton That\Desktop\Check\Check\obj\Debug\Check.pdb
 C:\Users\Vinh Ton That\Desktop\Check\Check\obj\Debug\Check.csprojResolveAssemblyReference.cache
-C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.exe.config
-C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.exe
-C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.pdb
-C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.csprojResolveAssemblyReference.cache
-C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.exe
-C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.pdb
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\Check\bin\Debug\Check.exe.config
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\Check\obj\Debug\Check.exe
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\Check\obj\Debug\Check.pdb
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\Check\bin\Debug\Check.exe
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\Check\bin\Debug\Check.pdb
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\Check\obj\Debug\Check.csprojResolveAssemblyReference.cache
+C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.exe.config
+C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.pdb
+C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.pdb

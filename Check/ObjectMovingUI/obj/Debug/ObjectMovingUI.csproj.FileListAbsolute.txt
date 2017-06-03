@@ -1,20 +1,3 @@
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe.config
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.pdb
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csprojResolveAssemblyReference.cache
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\MainWindow.g.cs
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\App.g.cs
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.cache
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.lref
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\MainWindow.baml
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.g.resources
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.Properties.Resources.resources
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.exe
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.pdb
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.exe
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.pdb
-C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.exe.config
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe.config
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.exe
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.pdb
@@ -33,5 +16,22 @@ C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\Objec
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.g.cs
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.baml
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe.config
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.pdb
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.pdb
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.exe.config
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csprojResolveAssemblyReference.cache
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\MainWindow.g.cs
 C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.g.cs
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\App.g.cs
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.cache
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.lref
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\MainWindow.baml
 C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.baml
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.g.resources
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.Properties.Resources.resources
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.exe
+C:\Codes\Visual Studio\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.pdb
