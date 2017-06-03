@@ -259,7 +259,8 @@ namespace ObjectMovingUI
                 foreach (var lv2 in lv1)
                 {
                     foreach (KButton k in lv2)
-                        k.updateBackGround();
+                        if (k.Background != Brushes.LightBlue)
+                            k.updateBackGround();
                 }
             }
             RefreshData();
