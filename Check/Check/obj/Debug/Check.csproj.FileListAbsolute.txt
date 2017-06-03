@@ -15,3 +15,4 @@ C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.exe
 C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.pdb
 C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.exe
 C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.pdb
+C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.csprojResolveAssemblyReference.cache

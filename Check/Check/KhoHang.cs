@@ -318,38 +318,27 @@ namespace Check
 
         public static void downloadFile()
         {
-            // Get the object used to communicate with the server.  
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            // This example assumes the FTP site uses anonymous logon.  
-            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
-
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
-            Stream responseStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(responseStream);
+            WebClient client = new WebClient();
+            string htmlCode = client.DownloadString("http://objectmoving.esy.es/input.txt");
             StreamWriter file = new StreamWriter("../../Resources/input.txt");
-            file.Write(reader.ReadToEnd());
-
+            file.Write(htmlCode);
             file.Close();
-            reader.Close();
-            response.Close();
         }
 
         public static void uploadFile()
         {
             // Get the object used to communicate with the server.  
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://objectmoving.esy.es/input.txt");
+            request.Credentials = new NetworkCredential("u288570171", "3781159");
             request.Method = WebRequestMethods.Ftp.Rename;
-            request.RenameTo = "/htdocs/input2.txt";
+            request.RenameTo = "input2.txt";
             request.GetResponse();
 
-            request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            request = (FtpWebRequest)WebRequest.Create("ftp://objectmoving.esy.es/input.txt");
             request.Method = WebRequestMethods.Ftp.UploadFile;
 
             // This example assumes the FTP site uses anonymous logon.  
-            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
+            request.Credentials = new NetworkCredential("u288570171", "3781159");
 
             // Copy the contents of the file to the request stream.  
             StreamReader sourceStream = new StreamReader("../../Resources/input.txt");
