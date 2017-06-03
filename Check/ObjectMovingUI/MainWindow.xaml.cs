@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Net;
+using System.IO;
+using System.Text;
 
 namespace ObjectMovingUI
 {
@@ -28,6 +31,7 @@ namespace ObjectMovingUI
 
         protected override void OnClosed(EventArgs e)
         {
+            uploadFile();
             base.OnClosed(e);
             App.Current.Shutdown();
         }
@@ -38,6 +42,7 @@ namespace ObjectMovingUI
             this.Title = title;
             this.Icon = BitmapFrame.Create(new BitmapImage(iconUri));
 
+            downloadFile();
             khoHang = new KhoHang();
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -234,5 +239,56 @@ namespace ObjectMovingUI
             dispatcherTimer.Interval = new TimeSpan(0, 0, 20);
             dispatcherTimer.Start();
         }
+
+        private void downloadFile()
+        {
+            // Get the object used to communicate with the server.  
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            // This example assumes the FTP site uses anonymous logon.  
+            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
+
+            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+            Stream responseStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(responseStream);
+            StreamWriter file = new StreamWriter("../../Resources/input.txt");
+            file.Write(reader.ReadToEnd());
+
+            file.Close();
+            reader.Close();
+            response.Close();
+        }
+
+        private void uploadFile()
+        {
+            // Get the object used to communicate with the server.  
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            request.Method = WebRequestMethods.Ftp.Rename;
+            request.RenameTo = "/htdocs/input2.txt";
+            request.GetResponse();
+
+            request = (FtpWebRequest)WebRequest.Create("ftp://b9_20183079:3781159@ftp.byethost9.com/htdocs/input.txt");
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+
+            // This example assumes the FTP site uses anonymous logon.  
+            request.Credentials = new NetworkCredential("b9_20183079", "3781159");
+
+            // Copy the contents of the file to the request stream.  
+            StreamReader sourceStream = new StreamReader("../../Resources/input.txt");
+            byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
+            sourceStream.Close();
+            request.ContentLength = fileContents.Length;
+
+            Stream requestStream = request.GetRequestStream();
+            requestStream.Write(fileContents, 0, fileContents.Length);
+            requestStream.Close();
+
+            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+            response.Close();
+        }
     }
+    
 }
