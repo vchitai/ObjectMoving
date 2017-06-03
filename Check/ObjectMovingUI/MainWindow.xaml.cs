@@ -25,6 +25,8 @@ namespace ObjectMovingUI
         private string title = "Hệ thống quản lý kho hàng";
         private Uri iconUri = new Uri("Resources/ico.png", UriKind.Relative);
 
+        System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                
         private TextBox selTb = null;
 
         private List<List<List<KButton>>> list_button; 
@@ -41,13 +43,18 @@ namespace ObjectMovingUI
             InitializeComponent();
             this.Title = title;
             this.Icon = BitmapFrame.Create(new BitmapImage(iconUri));
-            
+
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+
+
             startPos.GotMouseCapture += StartPos_GotMouseCapture;
             endPos.GotMouseCapture += EndPos_GotMouseCapture;
             startPos.IsReadOnly = false;
             endPos.IsReadOnly = false;
 
-            KhoHang.downloadFile();
+            //KhoHang.downloadFile();
             khoHang = new KhoHang();
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -240,13 +247,21 @@ namespace ObjectMovingUI
         //On PageLoad, populate the grid, and set a timer to repeat ever 60 seconds
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {            
-            RefreshData();
-            SetTimer();            
+            RefreshData();                  
         }
 
         //Refreshes grid data on timer tick
         protected void dispatcherTimer_Tick(object sender, EventArgs e)
         {
+            KhoHang.downloadFile();
+            foreach (var lv1 in list_button)
+            {
+                foreach (var lv2 in lv1)
+                {
+                    foreach (KButton k in lv2)
+                        k.updateBackGround();
+                }
+            }
             RefreshData();
         }
 
@@ -254,16 +269,7 @@ namespace ObjectMovingUI
         private void RefreshData()
         {
             DrawArea.InvalidateVisual();
-        }
-
-        //Set and start the timer
-        private void SetTimer()
-        {
-            DispatcherTimer dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 20);
-            dispatcherTimer.Start();
-        }        
+        }          
 
         private void move_Click(object sender, RoutedEventArgs e)
         {
