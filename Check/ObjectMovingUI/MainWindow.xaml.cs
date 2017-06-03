@@ -33,7 +33,8 @@ namespace ObjectMovingUI
 
         protected override void OnClosed(EventArgs e)
         {
-            KhoHang.uploadFile();
+            if (isOnline.IsChecked == true)
+                KhoHang.uploadFile();
             base.OnClosed(e);
             App.Current.Shutdown();
         }
@@ -45,16 +46,16 @@ namespace ObjectMovingUI
             this.Icon = BitmapFrame.Create(new BitmapImage(iconUri));
 
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
             dispatcherTimer.Start();
-
-
+            
             startPos.GotMouseCapture += StartPos_GotMouseCapture;
             endPos.GotMouseCapture += EndPos_GotMouseCapture;
             startPos.IsReadOnly = false;
-            endPos.IsReadOnly = false;
+            endPos.IsReadOnly = false;            
 
-            KhoHang.downloadFile();
+            if (isOnline.IsChecked == true)
+                KhoHang.downloadFile();
             khoHang = new KhoHang();
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -176,7 +177,7 @@ namespace ObjectMovingUI
                 KienHang k = btn.getKienHang();
                 if (k.getWidth() != 0)
                 {                         
-                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn, khoHang);
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline.IsChecked);
                     if (p != null)
                     {
                         p.kichThuocEdit.Visibility = Visibility.Collapsed;
@@ -185,7 +186,7 @@ namespace ObjectMovingUI
                 }
                 else
                 {
-                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn, khoHang);
+                    PopUp p = new ObjectMovingUI.PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline.IsChecked);
                     if (p != null)
                     {
                         p.kichThuoc.Visibility = Visibility.Collapsed;
@@ -240,7 +241,8 @@ namespace ObjectMovingUI
                 draggedButton.move(khoHang, droppedButton);
                 draggedButton = null;
                 khoHang.writeData();
-                KhoHang.uploadFile();
+                if (isOnline.IsChecked == true)
+                    KhoHang.uploadFile();
             }
         }
 
@@ -253,7 +255,8 @@ namespace ObjectMovingUI
         //Refreshes grid data on timer tick
         protected void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            KhoHang.downloadFile();
+            if (isOnline.IsChecked == true)
+                KhoHang.downloadFile();
             khoHang.loadData();
             foreach (var lv1 in list_button)
             {
@@ -286,8 +289,9 @@ namespace ObjectMovingUI
                 }
             }
             khoHang.writeData();
-            KhoHang.uploadFile();
-        }
+            if (isOnline.IsChecked == true)
+                KhoHang.uploadFile();
+        }       
     }
     
 }

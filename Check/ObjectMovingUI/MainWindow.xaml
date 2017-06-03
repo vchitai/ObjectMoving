@@ -14,10 +14,11 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="187*"/>
+            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="259*"/>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Column="0" Grid.Row="0" Background="White">
+        <Menu Grid.Column="0" Grid.Row="0" Background="White" Grid.ColumnSpan="2">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open"/>
                 <MenuItem Header="_Close"/>
@@ -34,14 +35,15 @@
             </MenuItem>
         </Menu>
 
-        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="1"  x:Name="DrawArea" Background="Azure"/>
-        <StackPanel  Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+        <ScrollViewer Grid.ColumnSpan="3" Grid.Row="1"  x:Name="DrawArea" Background="Azure"/>
+        <StackPanel  Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="2">
             <Label x:Name="textBlock1" HorizontalAlignment="Left" Content="From:" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox x:Name="startPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="73" VerticalContentAlignment="Center" Text="[k0] (x0, y0)" Margin="0,6"/>
             <Label x:Name="textBlock1_Copy" HorizontalAlignment="Left" VerticalAlignment="Center" Content="To:" VerticalContentAlignment="Center"/>
             <TextBox x:Name="endPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="68" VerticalContentAlignment="Center" Text="[k1] (x1, y1)"/>
             <Button x:Name="move" Content="Move" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightPink" ToolTip="Di chuyen hang tu vi tri nguon den vi tri dich" Margin="10,6,0,6" Padding="5, 0, 5, 0" Click="move_Click"/>
+            <CheckBox x:Name="isOnline" Content="Online" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="" Margin="10,6,0,6" Padding="5, 0, 5, 0" IsTabStop="False" IsHitTestVisible="True"/>
         </StackPanel>
-        <Label Grid.Row="2" Grid.Column="1" Content="Zoom box aka Slider to Zoom"/>
+        <Label Grid.Row="2" Grid.Column="2" Content="Zoom box aka Slider to Zoom"/>
     </Grid>
 </Window>

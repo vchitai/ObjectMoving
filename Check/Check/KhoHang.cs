@@ -211,6 +211,9 @@ namespace Check
                 return;
             }
             string line = file.ReadLine();
+
+            if (line == null) return;
+
             soLuongKhu = toInt(line);
             
             for (int i = 0; i < soLuongKhu; ++i)
@@ -319,7 +322,15 @@ namespace Check
         public static void downloadFile()
         {
             WebClient client = new WebClient();
-            string htmlCode = client.DownloadString("http://objectmoving.esy.es/input.txt");
+            string htmlCode;
+            try
+            {
+                htmlCode = client.DownloadString("http://objectmoving.esy.es/input.txt");
+            }
+            catch(Exception)
+            {
+                return;
+            }
             StreamWriter file = new StreamWriter("../../Resources/input.txt");
             file.Write(htmlCode);
             file.Close();
@@ -332,7 +343,15 @@ namespace Check
             request.Credentials = new NetworkCredential("u288570171", "3781159");
             request.Method = WebRequestMethods.Ftp.Rename;
             request.RenameTo = "input2.txt";
-            request.GetResponse();
+
+            try
+            {
+                request.GetResponse();
+            }
+            catch (Exception)
+            {
+                return;
+            }
 
             request = (FtpWebRequest)WebRequest.Create("ftp://objectmoving.esy.es/input.txt");
             request.Method = WebRequestMethods.Ftp.UploadFile;
@@ -350,7 +369,15 @@ namespace Check
             requestStream.Write(fileContents, 0, fileContents.Length);
             requestStream.Close();
 
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            FtpWebResponse response;
+            try
+            {
+                response = (FtpWebResponse)request.GetResponse();
+            }
+            catch(Exception)
+            {
+                return;
+            }
 
             response.Close();
         }

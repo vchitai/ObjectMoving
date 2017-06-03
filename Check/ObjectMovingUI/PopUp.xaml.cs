@@ -23,13 +23,15 @@ namespace ObjectMovingUI
         private KhoHang khoHang;
         private KienHang k;
         private KButton b;
+        private bool isOn;
 
-        public PopUp(KienHang kienHang, KButton _b, KhoHang _khoHang)
+        public PopUp(KienHang kienHang, KButton _b, KhoHang _khoHang, bool isOnline)
         {            
             InitializeComponent();
             k = kienHang;
             b = _b;
             khoHang = _khoHang;
+            isOn = isOnline;
             this.kichThuoc.Text = kienHang.getWidthInfo();
             this.ngay.Text = kienHang.getNgayInfo();
             this.thang.Text = kienHang.getThangInfo();
@@ -66,7 +68,8 @@ namespace ObjectMovingUI
                     b.updateBackGround();
                     this.Close();
                     khoHang.writeData();
-                    KhoHang.uploadFile();
+                    if (isOn == true)
+                        KhoHang.uploadFile();
                 }
             }
             else
@@ -88,7 +91,8 @@ namespace ObjectMovingUI
                     b.updateBackGround();
                     this.Close();
                     khoHang.writeData();
-                    KhoHang.uploadFile();
+                    if (isOn == true)
+                        KhoHang.uploadFile();
                 }
             }
         }
@@ -104,7 +108,8 @@ namespace ObjectMovingUI
             b.updateBackGround();
             this.Close();
             khoHang.writeData();
-            KhoHang.uploadFile();
+            if (isOn == true)
+                KhoHang.uploadFile();
         }
     }
 }
