@@ -182,7 +182,7 @@ namespace ObjectMovingUI
 
         private void GenerateMap(string fileName = "../../Resources/input.txt")
         {
-            sldZoom.IsEnabled = false;
+            sldZoom.IsEnabled = true;
             khoHang = new KhoHang(fileName);
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -266,6 +266,9 @@ namespace ObjectMovingUI
                 sp.Children.Add(wp);
 
                 list_button.Add(button_list);
+                //wpCurrent = wp;
+                angleCurrent = 0;
+                sldZoom.Value = 50;
 
                 //Point relativePoint = wp.TransformToVisual(this).Transform(new Point(0, 0));
                 //Point relativePoint = button_list[0][0].TransformToVisual(Application.Current.MainWindow).Transform(new Point(0, 0));
@@ -641,6 +644,8 @@ namespace ObjectMovingUI
 
             if (wpCurrent != null)
                 wpCurrent.LayoutTransform = transfrom;
+            else
+                DrawArea.LayoutTransform = transfrom;
         }
     }
     
