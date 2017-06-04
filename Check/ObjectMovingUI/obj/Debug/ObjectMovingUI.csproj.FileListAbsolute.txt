@@ -53,3 +53,21 @@ D:\Lap Trinh C\New folder\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.baml
 D:\Lap Trinh C\New folder\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.g.resources
 D:\Lap Trinh C\New folder\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.Properties.Resources.resources
 D:\Lap Trinh C\New folder\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe.config
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.exe
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.pdb
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\bin\Debug\ObjectMovingUI.pdb
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.exe
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\bin\Debug\Check.pdb
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csprojResolveAssemblyReference.cache
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\MainWindow.g.cs
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.g.cs
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\App.g.cs
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.cache
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.lref
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\MainWindow.baml
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\PopUp.baml
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.g.resources
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.Properties.Resources.resources
+D:\Lap Trinh C\ObjectMoving\Check\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache

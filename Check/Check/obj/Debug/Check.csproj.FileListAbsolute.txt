@@ -22,3 +22,9 @@ D:\Lap Trinh C\New folder\ObjectMoving\Check\Check\bin\Debug\Check.pdb
 D:\Lap Trinh C\New folder\ObjectMoving\Check\Check\obj\Debug\Check.csprojResolveAssemblyReference.cache
 D:\Lap Trinh C\New folder\ObjectMoving\Check\Check\obj\Debug\Check.exe
 D:\Lap Trinh C\New folder\ObjectMoving\Check\Check\obj\Debug\Check.pdb
+D:\Lap Trinh C\ObjectMoving\Check\Check\bin\Debug\Check.exe.config
+D:\Lap Trinh C\ObjectMoving\Check\Check\bin\Debug\Check.exe
+D:\Lap Trinh C\ObjectMoving\Check\Check\bin\Debug\Check.pdb
+D:\Lap Trinh C\ObjectMoving\Check\Check\obj\Debug\Check.csprojResolveAssemblyReference.cache
+D:\Lap Trinh C\ObjectMoving\Check\Check\obj\Debug\Check.exe
+D:\Lap Trinh C\ObjectMoving\Check\Check\obj\Debug\Check.pdb

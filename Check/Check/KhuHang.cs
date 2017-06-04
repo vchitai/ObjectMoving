@@ -8,8 +8,8 @@ namespace Check
 {
     public class KhuHang
     {
-        private int posX;
-        private int posY;
+        public int posX;
+        public int posY;
         private int nRow;
         private int nCol;
         private float gocNghieng;

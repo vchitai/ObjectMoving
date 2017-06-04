@@ -28,6 +28,8 @@ namespace ObjectMovingUI
         private Uri iconUri = new Uri("Resources/ico.png", UriKind.Relative);
         private WrapPanel wpCurrent = null;
         private float angleCurrent = 0;
+        private double[] posXkhuHang = new double[3] { -1, -1, -1 };
+        private double[] posYkhuHang = new double[3] { -1, -1, -1 };
 
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
                 
@@ -61,6 +63,121 @@ namespace ObjectMovingUI
             if (isOnline.IsChecked == true)
                 KhoHang.downloadFile();
             GenerateMap();
+        }
+
+        bool mouseDown = false; // Set to 'true' when mouse is held down.
+        Point mouseDownPos; // The point where the mouse button was clicked down.
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (wpCurrent != null)
+                return;
+            // Capture and track the mouse.
+            mouseDown = true;
+            mouseDownPos = e.GetPosition(theGrid);
+            theGrid.CaptureMouse();
+
+            // Initial placement of the drag selection box.         
+            Canvas.SetLeft(selectionBox, mouseDownPos.X);
+            Canvas.SetTop(selectionBox, mouseDownPos.Y);
+            selectionBox.Width = 0;
+            selectionBox.Height = 0;
+
+            // Make the drag selection box visible.
+            selectionBox.Visibility = Visibility.Visible;
+        }
+
+        private double TinhKhoangCach(double x1 = 0, double y1 = 0, double x2 = 0, double y2= 0)
+        {
+            return Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        }
+
+        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+        {         
+            // Release the mouse capture and stop tracking it.
+            mouseDown = false;
+            theGrid.ReleaseMouseCapture();
+
+            // Hide the drag selection box.
+            selectionBox.Visibility = Visibility.Collapsed;
+
+            Point mouseUpPos = e.GetPosition(theGrid);
+
+            // TODO: 
+            //
+            // The mouse has been released, check to see if any of the items 
+            // in the other canvas are contained within mouseDownPos and 
+            // mouseUpPos, for any that are, select them!
+            //
+
+            double left = Canvas.GetLeft(selectionBox);
+            double top = Canvas.GetTop(selectionBox);
+            double right = left + selectionBox.Width;
+            double bottom = top + selectionBox.Height;
+
+            int pos = -1;
+            bool ok = false;
+            foreach (var lv1 in list_button)
+            {
+                pos = pos + 1;
+                foreach(var lv2 in lv1)
+                {
+                    foreach(KButton kk in lv2)
+                    {
+                        Point relativePoint = kk.TransformToAncestor(this).Transform(new Point(0, 0));
+                        double x = relativePoint.X;
+                        double y = relativePoint.Y;
+                        if (left <= x && right >= x && top <= y && y <= bottom)
+                        {
+                            ok = true;
+                            break;
+                        }
+                    }
+                    if (ok) break;
+                }
+                if (ok) break;
+            }            
+
+            if (ok)
+                GenerateMapZoom1Khu(pos + 1);
+
+            Canvas.SetLeft(selectionBox, 0);
+            Canvas.SetTop(selectionBox, 0);
+            selectionBox.Width = 0;
+            selectionBox.Height = 0;
+
+        }
+
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        {            
+            if (mouseDown)
+            {
+                // When the mouse is held down, reposition the drag selection box.
+
+                Point mousePos = e.GetPosition(theGrid);
+
+                if (mouseDownPos.X < mousePos.X)
+                {
+                    Canvas.SetLeft(selectionBox, mouseDownPos.X);
+                    selectionBox.Width = mousePos.X - mouseDownPos.X;
+                }
+                else
+                {
+                    Canvas.SetLeft(selectionBox, mousePos.X);
+                    selectionBox.Width = mouseDownPos.X - mousePos.X;
+                }
+
+                if (mouseDownPos.Y < mousePos.Y)
+                {
+                    Canvas.SetTop(selectionBox, mouseDownPos.Y);
+                    selectionBox.Height = mousePos.Y - mouseDownPos.Y;
+                }
+                else
+                {
+                    Canvas.SetTop(selectionBox, mousePos.Y);
+                    selectionBox.Height = mouseDownPos.Y - mousePos.Y;
+                }
+            }
         }
 
         private void GenerateMap(string fileName = "../../Resources/input.txt")
@@ -149,10 +266,30 @@ namespace ObjectMovingUI
                 sp.Children.Add(wp);
 
                 list_button.Add(button_list);
+
+                //Point relativePoint = wp.TransformToVisual(this).Transform(new Point(0, 0));
+                //Point relativePoint = button_list[0][0].TransformToVisual(Application.Current.MainWindow).Transform(new Point(0, 0));
+                //Point relativePoint = wp.TransformToVisual(sp).Transform(new Point(0, 0));
+                //posXkhuHang[k] = relativePoint.X;
+                //posYkhuHang[k] = relativePoint.Y;
             }
             DrawArea.Content = sp;
 
             DrawArea.Loaded += Page_Loaded;
+
+            for (int i = 0; i < khoHang.getSoLuongKhu(); ++i)
+            {
+                //Point relativePoint = list_button[i][0][0].TransformToAncestor(this).Transform(new Point(0, 0));
+                // Return the offset vector for the TextBlock object.
+                //Vector vector = VisualTreeHelper.GetOffset(list_button[i][0][0]);
+
+                // Convert the vector to a point value.
+                //Point currentPoint = new Point(vector.X, vector.Y);
+
+                //UIElement container = VisualTreeHelper.GetParent(list_button[i][0][0]) as UIElement;
+                //UIElement container2 = VisualTreeHelper.GetParent(container) as UIElement;
+                //Point relativeLocation = list_button[i][0][0].TranslatePoint(new Point(0, 0), container);
+            }
         }
 
         private void GenerateMapZoom1Khu(int khu = 1, string fileName = "../../Resources/input.txt")
@@ -504,11 +641,6 @@ namespace ObjectMovingUI
 
             if (wpCurrent != null)
                 wpCurrent.LayoutTransform = transfrom;
-        }
-
-        private void DrawArea_DragEnter(object sender, DragEventArgs e)
-        {
-            MessageBox.Show("drag");
         }
     }
     
