@@ -26,6 +26,8 @@ namespace ObjectMovingUI
         private string title = "Hệ thống quản lý kho hàng";
         private string guideFile = "../../Resources/Guide.txt";
         private Uri iconUri = new Uri("Resources/ico.png", UriKind.Relative);
+        private WrapPanel wpCurrent = null;
+        private float angleCurrent = 0;
 
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
                 
@@ -63,6 +65,7 @@ namespace ObjectMovingUI
 
         private void GenerateMap(string fileName = "../../Resources/input.txt")
         {
+            sldZoom.IsEnabled = false;
             khoHang = new KhoHang(fileName);
             DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -147,6 +150,102 @@ namespace ObjectMovingUI
 
                 list_button.Add(button_list);
             }
+            DrawArea.Content = sp;
+
+            DrawArea.Loaded += Page_Loaded;
+        }
+
+        private void GenerateMapZoom1Khu(int khu = 1, string fileName = "../../Resources/input.txt")
+        {
+            sldZoom.IsEnabled = true;
+            khoHang = new KhoHang(fileName);
+            DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            sp = new StackPanel();
+            sp.Orientation = Orientation.Horizontal;
+            if (list_button != null)
+                list_button.Clear();
+            list_button = new List<List<List<KButton>>>();
+            khu--;
+            {
+                KhuHang khuHang = khoHang.getKhu(khu);
+                WrapPanel wp = new WrapPanel();
+                int row = khuHang.getNRow();
+                int col = khuHang.getNCol();
+                wp.Height = buttonHeight * (row + 1);
+                wp.Width = buttonWidth * col;
+
+                List<List<KButton>> button_list;
+
+                button_list = new List<List<ObjectMovingUI.KButton>>();
+                Label khuHangName = new Label();
+                khuHangName.Height = buttonHeight;
+                khuHangName.Width = wp.Width;
+                khuHangName.Content = "Khu hàng " + (khu + 1).ToString();
+                khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
+                khuHangName.Padding = new Thickness(0, 0, 0, 0);
+
+                wp.Children.Add(khuHangName);
+                for (int i = 0; i < row; ++i)
+                {
+                    button_list.Add(new List<KButton>());
+                    for (int j = 0; j < col; ++j)
+                    {
+                        KButton btn = new KButton(khu + 1, i, j, khuHang.get(i, j));
+                        btn.FontSize += 10;
+                        btn.Height = buttonHeight;
+                        btn.Width = buttonWidth;
+                        btn.Content = btn.Name;
+                        btn.Click += Btn_Click;
+                        btn.MouseDown += Btn_MouseDown;
+                        btn.GotMouseCapture += Btn_GotMouseCapture;
+                        btn.MouseEnter += Btn_MouseEnter;
+                        btn.MouseLeave += Btn_MouseLeave;
+                        btn.setBackGround(khuHang.get(i, j).getWidth());
+                        btn.AllowDrop = true;
+                        btn.PreviewMouseMove += Btn_PreviewMouseMove;
+                        btn.Drop += Btn_Drop;
+                        button_list[i].Add(btn);
+                    }
+                }
+
+                for (int i = 0; i < row; ++i)
+                {
+                    for (int j = 0; j < col; ++j)
+                    {
+                        if (j == 0)
+                            button_list[i][j].setLeft(null);
+                        else
+                            button_list[i][j].setLeft(button_list[i][j - 1]);
+
+                        if (j == col - 1)
+                            button_list[i][j].setRight(null);
+                        else
+                            button_list[i][j].setRight(button_list[i][j + 1]);
+                    }
+                }
+
+                for (int i = 0; i < row; i++)
+                {
+                    for (int j = 0; j < col; j++)
+                    {
+                        wp.Children.Add(button_list[i][j]);
+                    }
+                }
+
+                RotateTransform rt = new RotateTransform();
+                rt.Angle = khuHang.getAngle();
+                
+                wp.LayoutTransform = rt;
+               
+                sp.Children.Add(wp);
+                sp.HorizontalAlignment = HorizontalAlignment.Center;
+                list_button.Add(button_list);
+                wpCurrent = wp;
+                angleCurrent = khuHang.getAngle();
+                sldZoom.Value = 50;
+            }
+            
             DrawArea.Content = sp;
 
             DrawArea.Loaded += Page_Loaded;
@@ -370,6 +469,46 @@ namespace ObjectMovingUI
 
             MessageBox.Show(file.ReadToEnd(), "Hướng dẫn sử dụng");
 
+        }
+
+        public void zoom_Kho1(object sender, RoutedEventArgs e)
+        {
+            GenerateMapZoom1Khu(1);
+        }
+
+        public void zoom_Kho2(object sender, RoutedEventArgs e)
+        {
+            GenerateMapZoom1Khu(2);
+        }
+
+        public void zoom_Kho3(object sender, RoutedEventArgs e)
+        {
+            GenerateMapZoom1Khu(3);
+        }
+
+        public void zoom_All(object sender, RoutedEventArgs e)
+        {
+            GenerateMap();
+            wpCurrent = null;
+        }
+
+        private void sldZoom_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Slider sld = sender as Slider;
+            TransformGroup transfrom = new TransformGroup();
+            RotateTransform rt = new RotateTransform();
+            rt.Angle = angleCurrent;
+            ScaleTransform sc = new ScaleTransform(0.5 + 0.5 * (sld.Value / 50), 0.5 + 0.5 * (sld.Value / 50));
+            transfrom.Children.Add(rt);
+            transfrom.Children.Add(sc);
+
+            if (wpCurrent != null)
+                wpCurrent.LayoutTransform = transfrom;
+        }
+
+        private void DrawArea_DragEnter(object sender, DragEventArgs e)
+        {
+            MessageBox.Show("drag");
         }
     }
     
