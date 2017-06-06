@@ -29,11 +29,11 @@ namespace ObjectMovingUI
         private float angleCurrent = 0;
         private double[] posXkhuHang = new double[3] { -1, -1, -1 };
         private double[] posYkhuHang = new double[3] { -1, -1, -1 };
+        private const int startOffsetX = 20;
+        private const int startOffsetY = 20;
 
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-
         private TextBox selTb = null;
-
         private List<List<List<KButton>>> list_button;
 
         protected override void OnClosed(EventArgs e)
@@ -198,18 +198,11 @@ namespace ObjectMovingUI
                 int col = khuHang.getNCol();
                 wp.Height = buttonHeight * (row + 1);
                 wp.Width = buttonWidth * col;
+                wp.VerticalAlignment = VerticalAlignment.Top;
 
                 List<List<KButton>> button_list;
 
-                button_list = new List<List<ObjectMovingUI.KButton>>();
-                Label khuHangName = new Label();
-                khuHangName.Height = buttonHeight;
-                khuHangName.Width = wp.Width;
-                khuHangName.Content = "Khu hàng " + (k + 1).ToString();
-                khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
-                khuHangName.Padding = new Thickness(0, 0, 0, 0);
-
-                wp.Children.Add(khuHangName);
+                button_list = new List<List<KButton>>();
                 for (int i = 0; i < row; ++i)
                 {
                     button_list.Add(new List<KButton>());
@@ -259,9 +252,12 @@ namespace ObjectMovingUI
 
                 RotateTransform rt = new RotateTransform();
                 rt.Angle = khuHang.getAngle();
-
                 wp.LayoutTransform = rt;
-                wp.Margin = new Thickness(offset, 0, 0, 0);
+
+                if (k != khoHang.getSoLuongKhu() - 1)
+                    wp.Margin = new Thickness(startOffsetX + khuHang.posX * buttonWidth, startOffsetY + khuHang.posY * buttonHeight, 0, 0);
+                else
+                    wp.Margin = new Thickness(startOffsetX + khuHang.posX * buttonWidth, startOffsetY + khuHang.posY * buttonHeight, startOffsetX, startOffsetY);
                 sp.Children.Add(wp);
 
                 list_button.Add(button_list);
@@ -269,6 +265,15 @@ namespace ObjectMovingUI
                 angleCurrent = 0;
                 sldZoom.Value = 50;
 
+
+                Label khuHangName = new Label();
+                khuHangName.Height = buttonHeight;
+                khuHangName.Width = wp.Width;
+                khuHangName.Content = "Khu hàng " + (k + 1).ToString();
+                khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
+                khuHangName.Padding = new Thickness(0, 0, 0, 0);
+
+                wp.Children.Add(khuHangName);
                 //Point relativePoint = wp.TransformToVisual(this).Transform(new Point(0, 0));
                 //Point relativePoint = button_list[0][0].TransformToVisual(Application.Current.MainWindow).Transform(new Point(0, 0));
                 //Point relativePoint = wp.TransformToVisual(sp).Transform(new Point(0, 0));
@@ -316,15 +321,7 @@ namespace ObjectMovingUI
 
                 List<List<KButton>> button_list;
 
-                button_list = new List<List<ObjectMovingUI.KButton>>();
-                Label khuHangName = new Label();
-                khuHangName.Height = buttonHeight;
-                khuHangName.Width = wp.Width;
-                khuHangName.Content = "Khu hàng " + (khu + 1).ToString();
-                khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
-                khuHangName.Padding = new Thickness(0, 0, 0, 0);
-
-                wp.Children.Add(khuHangName);
+                button_list = new List<List<KButton>>();
                 for (int i = 0; i < row; ++i)
                 {
                     button_list.Add(new List<KButton>());
@@ -383,6 +380,15 @@ namespace ObjectMovingUI
                 wpCurrent = wp;
                 angleCurrent = khuHang.getAngle();
                 sldZoom.Value = 50;
+
+                Label khuHangName = new Label();
+                khuHangName.Height = buttonHeight;
+                khuHangName.Width = wp.Width;
+                khuHangName.Content = "Khu hàng " + (khu + 1).ToString();
+                khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
+                khuHangName.Padding = new Thickness(0, 0, 0, 0);
+
+                wp.Children.Add(khuHangName);
             }
 
             DrawArea.Content = sp;
