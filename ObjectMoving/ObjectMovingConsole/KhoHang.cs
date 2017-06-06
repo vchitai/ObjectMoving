@@ -9,46 +9,39 @@ namespace ObjectMovingConsole
 {
     public class KhoHang
     {
+        #region staticVariable
         private static WebClient webClient;
         private static FtpWebRequest ftpWebRequest;
+        private static NetworkCredential nc;
         private static string defaultInputFile;
         private static string fileLink;
         private static string httpLink;
         private static string ftpLink;
-        private static string userName;
+        private static string username;
         private static string password;
-        private static NetworkCredential nc;
+        #endregion
 
+        #region variable
         private int soLuongKhu;
         private List<KhuHang> khu;
+        #endregion
 
-        static KhoHang()
+        #region handleString
+        static public string Remove(string s, char ch)
         {
-            defaultInputFile = "../../../Resources/input.txt";
-            fileLink = "objectmoving.esy.es/input.txt";
-            httpLink = "http://" + fileLink;
-            ftpLink = "ftp://" + fileLink;
-            userName = "u288570171";
-            password = "3781159";
-            webClient = new WebClient();
-            nc = new NetworkCredential(userName, password);
-        }
-
-        public int getSoLuongKhu()
-        {
-            return soLuongKhu;
-        }
-
-        public KhuHang getKhu(int i)
-        {
-            return khu[i];
+            while (s.Length > 0 && s[0] != ch)
+            {
+                s = s.Remove(0, 1);
+            }
+            if (s.Length > 0) s = s.Remove(0, 1);
+            return s;
         }
 
         private int toInt(string s)
         {
             int res = 0;
 
-            for(int i = 0; i < s.Length; ++i)
+            for (int i = 0; i < s.Length; ++i)
             {
                 if (s[i] <= '9' && s[i] >= '0')
                 {
@@ -62,6 +55,20 @@ namespace ObjectMovingConsole
 
             return res;
         }
+        #endregion
+
+        #region constructor
+        static KhoHang()
+        {
+            defaultInputFile = "../../../Resources/input.txt";
+            fileLink = "objectmoving.esy.es/input.txt";
+            httpLink = "http://" + fileLink;
+            ftpLink = "ftp://" + fileLink;
+            username = "u288570171";
+            password = "3781159";
+            webClient = new WebClient();
+            nc = new NetworkCredential(username, password);
+        }
 
         public KhoHang(string fileName = "../../../Resources/input.txt")
         {
@@ -71,7 +78,7 @@ namespace ObjectMovingConsole
             soLuongKhu = toInt(line);
 
             khu = new List<KhuHang>();
-            for(int i = 0; i < soLuongKhu; ++i)
+            for (int i = 0; i < soLuongKhu; ++i)
             {
                 KhuHang k = new KhuHang();
                 k.docFile(file);
@@ -79,17 +86,21 @@ namespace ObjectMovingConsole
             }
             file.Close();
         }
+        #endregion
 
-        static public string Remove(string s, char ch)
+        #region getVariable
+        public int getSoLuongKhu()
         {
-            while (s.Length > 0 && s[0] != ch)
-            {
-                s = s.Remove(0, 1);
-            }
-            if (s.Length > 0) s = s.Remove(0, 1);
-            return s;
+            return soLuongKhu;
         }
 
+        public KhuHang getKhu(int i)
+        {
+            return khu[i];
+        }
+        #endregion
+
+        #region moveFunction
         public void moveByCommand(string temp_line)
         {
             string line = "";
@@ -214,7 +225,70 @@ namespace ObjectMovingConsole
             }
         }
 
+        //-1: Dich den khong hop le
+        //-2: Khong co hang o (pre_x, pre_y)
+        //-3: Toa do qua gioi han        
+        public int Move(int pre_k, int pre_x, int pre_y, int new_k, int new_x, int new_y)
+        {
+            pre_k--; new_k--;
 
+            if (pre_x < 0 || pre_x >= khu[pre_k].getNRow()) return -3;
+            if (new_x < 0 || new_x >= khu[new_k].getNRow()) return -3;
+            if (pre_y < 0 || pre_y >= khu[pre_k].getNCol()) return -3;
+            if (new_y < 0 || new_y >= khu[new_k].getNCol()) return -3;
+
+            int w1 = khu[pre_k].get(pre_x, pre_y).getWidth();
+
+            if (w1 == 0) return -2;
+
+            if (w1 == 2)
+            {
+                if (new_y + 1 >= khu[new_k].getNCol()) return -1;
+                KienHang temp1 = new KienHang();
+                KienHang temp2 = new KienHang();
+                temp1.copy(khu[pre_k].get(pre_x, pre_y));
+                temp2.copy(khu[pre_k].get(pre_x, pre_y + 1));
+                khu[pre_k].get(pre_x, pre_y).refresh();
+                khu[pre_k].get(pre_x, pre_y + 1).refresh();
+                if (khu[new_k].get(new_x, new_y + 1).getWidth() != 0 || khu[new_k].get(new_x, new_y).getWidth() != 0)
+                {
+                    khu[pre_k].set(pre_x, pre_y, temp1);
+                    khu[pre_k].set(pre_x, pre_y + 1, temp2);
+                    return -1;
+                }
+                khu[new_k].set(new_x, new_y, temp1);
+                khu[new_k].set(new_x, new_y + 1, temp2);
+            }
+            if (w1 == -2)
+            {
+                if (new_y - 1 < 0) return -1;
+                KienHang temp1 = new KienHang();
+                KienHang temp2 = new KienHang();
+                temp1.copy(khu[pre_k].get(pre_x, pre_y));
+                temp2.copy(khu[pre_k].get(pre_x, pre_y - 1));
+                khu[pre_k].get(pre_x, pre_y).refresh();
+                khu[pre_k].get(pre_x, pre_y - 1).refresh();
+                if (khu[new_k].get(new_x, new_y - 1).getWidth() != 0 || khu[new_k].get(new_x, new_y).getWidth() != 0)
+                {
+                    khu[pre_k].set(pre_x, pre_y, temp1);
+                    khu[pre_k].set(pre_x, pre_y - 1, temp2);
+                    return -1;
+                }
+                khu[new_k].set(new_x, new_y, temp1);
+                khu[new_k].set(new_x, new_y - 1, temp2);
+            }
+            if (w1 == 1)
+            {
+                if (khu[new_k].get(new_x, new_y).getWidth() != 0) return -1;
+                khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
+                khu[pre_k].get(pre_x, pre_y).refresh();
+            }
+
+            return 1;
+        }
+        #endregion
+
+        #region readData
         public void loadData()
         {
             try
@@ -243,6 +317,33 @@ namespace ObjectMovingConsole
             }
         }
 
+        public void saveTo(string fileName)
+        {
+            StreamWriter file;
+            try
+            {
+                file = new StreamWriter(fileName);
+                file.Write(soLuongKhu);
+                file.WriteLine("");
+                for (int i = 0; i < soLuongKhu; ++i)
+                {
+                    khu[i].writeData(file);
+                }
+                file.Close();
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                MessageBox.Show("Không thể truy xuất tập tin.", "Lỗi đường dẫn");
+                return;
+            }
+        }
+        #endregion
+
+        #region writeData
         public void writeData()
         {
             try
@@ -255,7 +356,7 @@ namespace ObjectMovingConsole
                     khu[i].writeData(file);
                 }
                 file.Close();
-            }                        
+            }
             catch (IOException)
             {
                 //the file is unavailable because it is:
@@ -274,71 +375,11 @@ namespace ObjectMovingConsole
                 Console.Write("["); Console.Write(i + 1); Console.Write("]\n");
                 khu[i].printOnConsole();
             }
-                
+
         }
+        #endregion
 
-        //-1: Dich den khong hop le
-        //-2: Khong co hang o (pre_x, pre_y)
-        //-3: Toa do qua gioi han        
-        public int Move(int pre_k, int pre_x, int pre_y, int new_k, int new_x, int new_y)
-        {
-            pre_k--; new_k--;
-
-            if (pre_x < 0 || pre_x >= khu[pre_k].getNRow()) return -3;
-            if (new_x < 0 || new_x >= khu[new_k].getNRow()) return -3;
-            if (pre_y < 0 || pre_y >= khu[pre_k].getNCol()) return -3;
-            if (new_y < 0 || new_y >= khu[new_k].getNCol()) return -3;
-
-            int w1 = khu[pre_k].get(pre_x, pre_y).getWidth();            
-            
-            if (w1 == 0) return -2;
-            
-            if (w1 == 2)
-            {
-                if (new_y + 1 >= khu[new_k].getNCol()) return -1;
-                KienHang temp1 = new KienHang();
-                KienHang temp2 = new KienHang();
-                temp1.copy(khu[pre_k].get(pre_x, pre_y));
-                temp2.copy(khu[pre_k].get(pre_x, pre_y + 1));
-                khu[pre_k].get(pre_x, pre_y).refresh();
-                khu[pre_k].get(pre_x, pre_y + 1).refresh();
-                if (khu[new_k].get(new_x, new_y + 1).getWidth() != 0 || khu[new_k].get(new_x, new_y).getWidth() != 0)
-                {
-                    khu[pre_k].set(pre_x, pre_y, temp1);
-                    khu[pre_k].set(pre_x, pre_y + 1, temp2);
-                    return -1;
-                }
-                khu[new_k].set(new_x, new_y, temp1);
-                khu[new_k].set(new_x, new_y + 1, temp2);                
-            }
-            if (w1 == -2)
-            {
-                if (new_y - 1 < 0) return -1;
-                KienHang temp1 = new KienHang();
-                KienHang temp2 = new KienHang();
-                temp1.copy(khu[pre_k].get(pre_x, pre_y));
-                temp2.copy(khu[pre_k].get(pre_x, pre_y - 1));
-                khu[pre_k].get(pre_x, pre_y).refresh();
-                khu[pre_k].get(pre_x, pre_y - 1).refresh();
-                if (khu[new_k].get(new_x, new_y - 1).getWidth() != 0 || khu[new_k].get(new_x, new_y).getWidth() != 0)
-                {
-                    khu[pre_k].set(pre_x, pre_y, temp1);
-                    khu[pre_k].set(pre_x, pre_y - 1, temp2);
-                    return -1;
-                }
-                khu[new_k].set(new_x, new_y, temp1);
-                khu[new_k].set(new_x, new_y - 1, temp2);                
-            }
-            if (w1 == 1)
-            {
-                if (khu[new_k].get(new_x, new_y).getWidth() != 0) return -1;
-                khu[new_k].set(new_x, new_y, khu[pre_k].get(pre_x, pre_y));
-                khu[pre_k].get(pre_x, pre_y).refresh();
-            }            
-
-            return 1;
-        }
-
+        #region donwloadData
         public static void downloadFile()
         {
             try
@@ -354,12 +395,14 @@ namespace ObjectMovingConsole
                 return;
             }
         }
+        #endregion
 
+        #region uploadData
         public static void uploadFile()
         {
             try
             {
-                // Rename
+                //Rename request
                 ftpWebRequest = (FtpWebRequest)WebRequest.Create(ftpLink);
                 ftpWebRequest.Credentials = nc;
                 ftpWebRequest.Method = WebRequestMethods.Ftp.Rename;
@@ -395,30 +438,6 @@ namespace ObjectMovingConsole
                 return;
             }
         }
-
-        public void saveTo(string fileName)
-        {
-            StreamWriter file;
-            try
-            {
-                file = new StreamWriter(fileName);
-                file.Write(soLuongKhu);
-                file.WriteLine("");
-                for (int i = 0; i < soLuongKhu; ++i)
-                {
-                    khu[i].writeData(file);
-                }
-                file.Close();
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                MessageBox.Show("Không thể truy xuất tập tin.", "Lỗi đường dẫn");
-                return;
-            }
-        }
+        #endregion
     }
 }

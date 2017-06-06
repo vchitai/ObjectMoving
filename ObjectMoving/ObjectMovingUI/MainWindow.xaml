@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ObjectMovingUI"
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="MainWindow" Height="350" Width="525" MinWidth="600">
@@ -14,31 +13,38 @@
         MouseMove="Grid_MouseMove"
         Background="Transparent"
         >
+        <!-- Thiết lập thông số Grid !-->
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="153*" />
-            <RowDefinition Height="116*"/>
+            <RowDefinition Height="150*" />
+            <RowDefinition Height="120*"/>
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="187*"/>
-            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="190*"/>
+            <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+
+        <!-- Tạo menu chức năng !-->
         <Menu Grid.Column="0" Grid.Row="0" Background="White" Grid.ColumnSpan="2">
             <MenuItem Header="_Tập tin">
                 <MenuItem Header="_Mở" Click="open_Click"/>
                 <MenuItem Header="_Lưu" Click="save_Click"/>
                 <MenuItem Header="_Thoát" Click="quit_Click"/>
             </MenuItem>
-            <MenuItem Name="zoom_Menu" Header="_Phóng to">
+            <MenuItem Header="_Phóng to" Name="zoom_Menu" >
                 <MenuItem Header="_All" Click="zoom_All"/>
             </MenuItem>
             <MenuItem Header="_Trợ giúp">
                 <MenuItem Header="_Hướng dẫn" Click="guide_Click"/>
             </MenuItem>
         </Menu>
+
+        <!-- Khu vực vẽ kho hàng !-->
         <ScrollViewer Grid.ColumnSpan="3" Grid.Row="1"  x:Name="DrawArea" Background="Azure" Grid.RowSpan="2"/>
+
+        <!-- Thanh chức năng di chuyển và trực tuyến !-->
         <StackPanel  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label x:Name="textBlock1" HorizontalAlignment="Left" Content="Từ:" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox x:Name="startPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="73" VerticalContentAlignment="Center" Text="[k0] (x0, y0)" Margin="0,6"/>
@@ -47,10 +53,12 @@
             <Button x:Name="move" Content="Di chuyển" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightPink" ToolTip="Di chuyển hàng từ vị trí nguồn đến vị trí đích" Margin="10,6,0,6" Padding="5, 0, 5, 0" Click="move_Click"/>
             <CheckBox x:Name="isOnline" Content="Trực tuyến" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="" Margin="10,6,0,6" Padding="5, 0, 5, 0" IsTabStop="False" IsHitTestVisible="True"/>
         </StackPanel>
+
+        <!-- Thanh trượt phóng to, thu nhỏ kích thước !-->
         <Slider x:Name="sldZoom" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Maximum="100" TickFrequency="10" ValueChanged="sldZoom_ValueChanged" TickPlacement="TopLeft" Cursor="Hand" SmallChange="1" Width="200" LargeChange="25" Value="50" Margin="0,0,10,0"/>
+
+        <!-- Tạo vùng chọn khi kéo thả chuột !-->
         <Canvas>
-            <!-- This canvas is overlaid over the previous canvas and is used to 
-                place the rectangle that implements the drag selection box. -->
             <Rectangle
                 x:Name="selectionBox"
                 Visibility="Collapsed"

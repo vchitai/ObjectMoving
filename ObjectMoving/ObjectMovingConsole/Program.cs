@@ -8,7 +8,7 @@ namespace ObjectMovingConsole
 {
     class Program
     {
-
+        #region handleString
         static private int toInt(string s)
         {
             int res = 0;
@@ -37,14 +37,16 @@ namespace ObjectMovingConsole
             if (s.Length > 0) s = s.Remove(0, 1);
             return s;
         }
-
+        #endregion
+        
         static void Main()
         {
-            KhoHang kho = new ObjectMovingConsole.KhoHang();
+            KhoHang kho = new KhoHang();
             kho.printOnConsole();
 
             do
             {
+                #region inputCommand
                 Console.Write("Nhap lenh di chuyen theo format sau: \"M [p] (x,y) [k] (u,v)\"\n");
                 string temp_line = Console.ReadLine();
                 string line = "";
@@ -53,6 +55,9 @@ namespace ObjectMovingConsole
                     if (temp_line[i] == ' ') continue;
                     line = line + temp_line[i];
                 }
+                #endregion
+
+                #region checkCommand
                 bool ok = false;
 
                 int p = 0;
@@ -137,7 +142,9 @@ namespace ObjectMovingConsole
                     ok = true;
                     break;
                 } while (true);
-                
+                #endregion
+
+                #region executeCommand
                 if (!ok)
                 {
                     Console.Write("Nhap sai cu phap\n");
@@ -160,10 +167,14 @@ namespace ObjectMovingConsole
                         Console.Write("Ban do nha kho da duoc cap nhat\n");
                     }
                 }
+                #endregion
+
+                #region checkContinue
                 Console.Write("Nhap Q de thoat, C de tiep tuc: \n");
                 string key = Console.ReadLine();
-                if (key == "Q") break;                
-            } while (true);            
+                if (key == "Q") break;
+                #endregion
+            } while (true);
         }
     }
 }

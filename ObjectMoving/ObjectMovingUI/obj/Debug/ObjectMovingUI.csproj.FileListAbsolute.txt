@@ -82,7 +82,6 @@ C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\MainWi
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\PopUp.g.cs
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\App.g.cs
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.cache
-C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.lref
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\MainWindow.baml
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\PopUp.baml
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.g.resources

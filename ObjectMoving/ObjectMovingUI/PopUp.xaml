@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ObjectMovingUI"
         mc:Ignorable="d"
         Title="Thông tin kiện hàng" Height="210" Width="300">
+    <!-- Thiết lập thông số Grid !-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -19,15 +19,17 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Thiết lập nhãn cho các vùng nhập !-->
         <Label Grid.Row="0" Grid.Column="0" x:Name="textBlock" HorizontalAlignment="Left" Height="30" Content="Kích thước : " VerticalAlignment="Center"/>
         <Label Grid.Row="1" Grid.Column="0" x:Name="textBlock_Copy" HorizontalAlignment="Left" Height="30" Content="Ngày nhập : " VerticalAlignment="Center" Width="75"/>
         <Label Grid.Row="2" Grid.Column="0" x:Name="textBlock_Copy1" HorizontalAlignment="Left" Height="30" Content="Mã Kiện : " VerticalAlignment="Center" Width="63"/>
         <Label Grid.Row="3" Grid.Column="0" x:Name="textBlock_Copy2" HorizontalAlignment="Left" Height="30" Content="Đơn giá : " VerticalAlignment="Center" Width="63"/>
-        <Button Grid.Row="4" Grid.Column="0" x:Name="delete" Content="Xóa" HorizontalAlignment="Left" VerticalAlignment="Center" Width="55" Height="27" FontWeight="Bold" Background="Red" Click="delete_Click" Margin="10, 0, 10, 0"/>
 
+        <!-- Vùng nhập kích thước kiện hàng !-->
         <TextBox Grid.Row="0" Grid.Column="1" x:Name="kichThuocEdit" HorizontalAlignment="Left" Height="20" Padding="0" TextWrapping="Wrap" Text="(1-2)" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="35" TextAlignment="Center"/>
         <Label Grid.Row="0" Grid.Column="1"  x:Name="kichThuoc" HorizontalAlignment="Left" Height="30" Content="Kích thước:" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
 
+        <!-- Vùng nhập ngày tháng năm !-->
         <StackPanel Grid.Row="1"  Grid.Column="1" Orientation="Horizontal">
             <TextBox x:Name="ngay" MaxLength="2" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="20" VerticalContentAlignment="Center"/>
             <Label x:Name="textBlock_Copy3" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="20" Content="/" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="11" Padding="0" />
@@ -35,14 +37,18 @@
             <Label x:Name="textBlock_Copy4" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="20" Content="/" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="11" Padding="0"/>
             <TextBox x:Name="nam" MaxLength="4" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="35" VerticalContentAlignment="Center"/>
         </StackPanel>
+
+        <!-- Vùng nhập mã kiện hàng !-->
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="maKien" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="94" VerticalContentAlignment="Center"/>
 
+        <!-- Vùng nhập đơn giá kiện hàng !-->
         <TextBox Grid.Row="3" Grid.Column="1" x:Name="donGia" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="94" VerticalContentAlignment="Center"/>
-        
+
+        <!-- Các nút chức năng !-->
+        <Button Grid.Row="4" Grid.Column="0" x:Name="delete" Content="Xóa" HorizontalAlignment="Left" VerticalAlignment="Center" Width="55" Height="27" FontWeight="Bold" Background="Red" Click="delete_Click" Margin="10, 0, 10, 0"/>
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button x:Name="cancel" Content="Hủy" HorizontalAlignment="Right" Height="27" VerticalAlignment="Center" Width="55" IsCancel="True" Click="cancel_Click" Background="White" Margin="10, 0, 10, 0"/>
             <Button x:Name="save" Content="Lưu" HorizontalAlignment="Right" Height="27" VerticalAlignment="Center" Width="55" IsCancel="True" Click="save_Click" FontWeight="Bold" Background="White"/>
         </StackPanel>
-
     </Grid>
 </Window>

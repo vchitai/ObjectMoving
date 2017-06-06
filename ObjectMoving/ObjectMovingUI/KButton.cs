@@ -7,16 +7,27 @@ namespace ObjectMovingUI
 {
     public class KButton : System.Windows.Controls.Button
     {
+        #region variable
         private int khu;
         private int x;
         private int y;
         private KienHang kienHang;
         private KButton left, right;
+        #endregion
 
-        private ImageBrush brush1 = new ImageBrush(new BitmapImage(new Uri("../../../Resources/Box1.png", UriKind.Relative)));
-        private ImageBrush brush2 = new ImageBrush(new BitmapImage(new Uri("../../../Resources/BoxHead.png", UriKind.Relative)));
-        private ImageBrush brush3 = new ImageBrush(new BitmapImage(new Uri("../../../Resources/BoxTail.png", UriKind.Relative)));
+        #region staticVariable
+        private static ImageBrush brush1;
+        private static ImageBrush brush2;
+        private static ImageBrush brush3;
+        #endregion
 
+        #region constructor
+        static KButton()
+        {
+            brush1 = new ImageBrush(new BitmapImage(new Uri("../../../Resources/Box1.png", UriKind.Relative)));
+            brush2 = new ImageBrush(new BitmapImage(new Uri("../../../Resources/BoxHead.png", UriKind.Relative)));
+            brush3 = new ImageBrush(new BitmapImage(new Uri("../../../Resources/BoxTail.png", UriKind.Relative)));
+        }
 
         public KButton(int k, int x_co, int y_co, KienHang _kienHang)
         {
@@ -25,7 +36,9 @@ namespace ObjectMovingUI
             y = y_co;
             kienHang = _kienHang;
         }
+        #endregion
 
+        #region getVariable
         public string getInfo()
         {
             return kienHang.getInfo();
@@ -34,16 +47,6 @@ namespace ObjectMovingUI
         public KienHang getKienHang()
         {
             return kienHang;
-        }
-
-        public void setLeft(KButton b)
-        {
-            left = b;
-        }
-
-        public void setRight(KButton b)
-        {
-            right = b;
         }
 
         public KButton getLeft()
@@ -56,6 +59,25 @@ namespace ObjectMovingUI
             return right;
         }
 
+        public string getPos()
+        {
+            return String.Format("[{0}] ({1},{2})", khu, x, y);
+        }
+        #endregion
+
+        #region setVariable
+        public void setLeft(KButton b)
+        {
+            left = b;
+        }
+
+        public void setRight(KButton b)
+        {
+            right = b;
+        }
+        #endregion
+
+        #region updateBackground
         public void setBackGround(int id)
         {
             if (id == 0)
@@ -88,31 +110,17 @@ namespace ObjectMovingUI
                 this.left.upBackGround();
             if (this.right != null)
                 this.right.upBackGround();
-        }        
+        }
+        #endregion
 
+        #region moveFunction
         public void move(KhoHang k, KButton b)
         {
             k.Move(khu, x, y, b.khu, b.x, b.y);
-            setBackGround(kienHang.getWidth());
-            b.setBackGround(b.kienHang.getWidth());
-
-            if (left != null)
-                left.setBackGround(left.kienHang.getWidth());
-
-            if (right != null)
-                right.setBackGround(right.kienHang.getWidth());
-
-            if (b.left != null)
-                b.left.setBackGround(b.left.kienHang.getWidth());
-
-            if (b.right != null)
-                b.right.setBackGround(b.right.kienHang.getWidth());
+            this.updateBackGround();
+            b.updateBackGround();
         }
-
-        public string getPos()
-        {
-            return String.Format("[{0}] ({1},{2})", khu, x, y);
-        }
+        #endregion
     }
        
 }

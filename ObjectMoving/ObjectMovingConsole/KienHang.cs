@@ -9,10 +9,13 @@ namespace ObjectMovingConsole
 {
     public class Date
     {
+        #region variable
         private int ngay;
         private int thang;
         private int nam;
+        #endregion
 
+        #region handleString
         private int toInt(string s)
         {
             int res = 0;
@@ -31,7 +34,9 @@ namespace ObjectMovingConsole
 
             return res;
         }
+        #endregion
 
+        #region constructor
         public Date()
         {
             ngay = thang = nam = -1;
@@ -50,7 +55,9 @@ namespace ObjectMovingConsole
             thang = toInt("" + s[3] + s[4]);
             nam = toInt("" + s[6] + s[7] + s[8] + s[9]);
         }
+        #endregion
 
+        #region setVariable
         public void capNhatNgay(int _ngay)
         {
             ngay = _ngay;
@@ -65,7 +72,9 @@ namespace ObjectMovingConsole
         {
             nam = _nam;
         }
+        #endregion
 
+        #region getVariable
         public int layNgay()
         {
             return ngay;
@@ -121,7 +130,9 @@ namespace ObjectMovingConsole
             }
             return String.Format("{0}", nam);
         }
+        #endregion
 
+        #region checkDate
         private static bool check_date(int day, int month, int year)
         {
             int leap = 0;
@@ -176,7 +187,9 @@ namespace ObjectMovingConsole
             if (day < 1 || day > upper) return false;
             return true;
         }
+        #endregion
 
+        #region convertDate
         public static Date convert(string _day, string _month, string _year)
         {            
             int x;
@@ -205,10 +218,12 @@ namespace ObjectMovingConsole
 
             return new Date();
         }
+        #endregion
     }
 
     public class KienHang
     {
+        #region variable
         private int posX;
         private int posY;
         private int width;
@@ -219,7 +234,9 @@ namespace ObjectMovingConsole
         private string maKienHang;
         private int donGia;
         private Date ngayNhapKho;
+        #endregion
 
+        #region constructor
         public KienHang()
         {
             posX = posY = width = 0;
@@ -243,7 +260,9 @@ namespace ObjectMovingConsole
             donGia = _donGia;
             ngayNhapKho = _ngayNhapKho;
         }
+        #endregion
 
+        #region getVariable
         public string getInfo()
         {
             string res = "";
@@ -261,20 +280,10 @@ namespace ObjectMovingConsole
             }
             return res;             
         }
-
-        internal void set(int _x, int _y, int _w, string _maKienHang, int _donGia, Date _ngayNhapKho)
-        {
-            posX = _x;
-            posY = _y;
-            width = _w;
-            maKienHang = _maKienHang;
-            donGia = _donGia;
-            ngayNhapKho = _ngayNhapKho;
-        }
-
+        
         public string getWidthInfo()
         {
-            return String.Format("{0}",  Math.Abs(width));
+            return String.Format("{0}", Math.Abs(width));
         }
 
         public string getNgayInfo()
@@ -285,11 +294,6 @@ namespace ObjectMovingConsole
         public string getThangInfo()
         {
             return ngayNhapKho.getThangInfo();
-        }
-
-        internal void writeData(StreamWriter file)
-        {
-            file.Write(posX + " " + posY + " " + width + " " + maKienHang + " " + donGia + " " + ngayNhapKho.getInfo());
         }
 
         public string getNamInfo()
@@ -321,7 +325,18 @@ namespace ObjectMovingConsole
         {
             return width;
         }
+        #endregion
 
+        #region setVariable
+        internal void set(int _x, int _y, int _w, string _maKienHang, int _donGia, Date _ngayNhapKho)
+        {
+            posX = _x;
+            posY = _y;
+            width = _w;
+            maKienHang = _maKienHang;
+            donGia = _donGia;
+            ngayNhapKho = _ngayNhapKho;
+        }
         private void updateInfo(int w, Date d, string maKien, int gia)
         {
             width = -2;
@@ -351,12 +366,12 @@ namespace ObjectMovingConsole
                 gia = Int32.Parse(_donGia);
             }
             else return -3;
-            
+
             ngayNhapKho = d;
             maKienHang = maKien;
             donGia = gia;
 
-            return 1;               
+            return 1;
         }
 
         public int setInfo2(string _kichThuoc, string ngay, string thang, string nam, string maKien, string _donGia)
@@ -367,14 +382,14 @@ namespace ObjectMovingConsole
             {
                 kk = Int32.Parse(_kichThuoc);
                 if (kk < 1 || kk > 2)
-                    return -1;                      
+                    return -1;
             }
             else
             {
                 return -1;
             }
             Date d = Date.convert(ngay, thang, nam);
-            if (d.layNam() == -1) return -2;            
+            if (d.layNam() == -1) return -2;
             int gia = 0;
             if (Int32.TryParse(_donGia, out x))
             {
@@ -384,9 +399,9 @@ namespace ObjectMovingConsole
 
             if (kk == 2 && (right == null || right.getWidth() != 0))
                 return -4;
-            else 
+            else
                 if (kk == 2)
-                    right.updateInfo(-2, d, maKien, gia);               
+                right.updateInfo(-2, d, maKien, gia);
 
             width = kk;
             ngayNhapKho = d;
@@ -403,7 +418,7 @@ namespace ObjectMovingConsole
             donGia = 0;
             ngayNhapKho = new Date(-1, -1, -1);
         }
-        
+
         public void copy(KienHang k)
         {
             width = k.width;
@@ -422,7 +437,7 @@ namespace ObjectMovingConsole
             {
                 left.setEmpty();
             }
-            this.setEmpty();   
+            this.setEmpty();
         }
 
         public void setXY(int x, int y)
@@ -430,5 +445,14 @@ namespace ObjectMovingConsole
             posX = x;
             posY = y;
         }
+        #endregion
+
+        #region writeData
+        internal void writeData(StreamWriter file)
+        {
+            file.Write(posX + " " + posY + " " + width + " " + maKienHang + " " + donGia + " " + ngayNhapKho.getInfo());
+        }
+        #endregion
+
     }
 }
