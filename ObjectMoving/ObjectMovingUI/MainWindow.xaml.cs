@@ -81,9 +81,8 @@ namespace ObjectMovingUI
             #endregion
 
             #region drawMap
-            // Download dữ liệu nếu đang trực tuyến và vẽ Kho Hàng
-            if (isOnline.IsChecked == true)
-                KhoHang.downloadFile();
+            // Download dữ liệu nếu đang trực tuyến và vẽ Kho Hàng            
+            KhoHang.downloadFile();
             GenerateMap();
             GenerateZoomMenu();
             #endregion

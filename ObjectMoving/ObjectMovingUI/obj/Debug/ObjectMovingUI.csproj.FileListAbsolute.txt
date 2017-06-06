@@ -92,3 +92,17 @@ C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\Object
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe.config
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.exe
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.pdb
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.csprojResolveAssemblyReference.cache
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\MainWindow.baml
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\PopUp.baml
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\MainWindow.g.cs
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\PopUp.g.cs
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\App.g.cs
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI_MarkupCompile.cache
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.g.resources
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.Properties.Resources.resources
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\bin\Debug\ObjectMovingUI.pdb
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\bin\Debug\ObjectMovingConsole.exe
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\bin\Debug\ObjectMovingConsole.pdb

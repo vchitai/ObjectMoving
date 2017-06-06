@@ -1,18 +1,21 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace ObjectMovingConsole
 {
     public class KhuHang
     {
-        public int posX;
-        public int posY;
+        #region variable
+        private int posX;
+        private int posY;
         private int nRow;
         private int nCol;
         private float gocNghieng;
-
         private List<List<KienHang>> kienHang;
+        #endregion
 
+        #region handleString
         private int toInt(string s)
         {
             int res = 0;
@@ -31,15 +34,15 @@ namespace ObjectMovingConsole
 
             return res;
         }
+        #endregion
 
-        //khoi tao khu hang
+        #region constructor
         public KhuHang()
         {
             nRow = nCol = 0;
             kienHang = new List<List<KienHang>>();
         }
 
-        //khoi tao khu hang voi nRow va nCol
         public KhuHang(int nRow, int nCol)
         {
             kienHang = new List<List<KienHang>>();
@@ -52,9 +55,10 @@ namespace ObjectMovingConsole
                 }
             }
         }
+        #endregion
 
-        //ham doc thong tin lien quan den khu hang hien tai tu file cho truoc
-        public void docFile(System.IO.StreamReader file)
+        #region readData
+        public void docFile(StreamReader file)
         {
             string line = file.ReadLine();
             string[] numberArray = line.Split(' ');
@@ -134,53 +138,7 @@ namespace ObjectMovingConsole
             }
         }
 
-        //ham in thong tin khu hang len man hinh Console
-        public void printOnConsole()
-        {
-            for (int i = 0; i < nRow; ++i)
-            {
-                for (int j = 0; j < nCol; ++j)
-                {
-                    char t = kienHang[i][j].getChar();
-                    Console.Write(t);
-                    Console.Write(' ');
-                }
-                Console.Write('\n');
-            }
-        }
-
-        //ham thiet lap lai thong tin kien hang o vi tri (x, y)
-        public void set(int x, int y, KienHang k)
-        {
-            kienHang[x][y].copy(k);
-        }
-
-        //lay kien hang o vi tri x, y
-        public KienHang get(int x, int y)
-        {
-            return kienHang[x][y];
-        }
-
-        //lay so dong
-        public int getNRow()
-        {
-            return nRow;
-        }
-
-        //lay so cot
-        public int getNCol()
-        {
-            return nCol;
-        }
-
-        //lay goc nghieng cua khu hang
-        public float getAngle()
-        {
-            return gocNghieng;
-        }
-
-        //nhan thong tin moi ve khu hang hien tai tu file cho truoc
-        public void loadData(System.IO.StreamReader file)
+        public void loadData(StreamReader file)
         {
             string line = file.ReadLine();
             string[] numberArray = line.Split(' ');
@@ -234,8 +192,10 @@ namespace ObjectMovingConsole
             }
         }
 
-        //cap nhat thong tin khu hang vao file cho truoc
-        public void writeData(System.IO.StreamWriter file)
+        #endregion
+
+        #region writeData
+        public void writeData(StreamWriter file)
         {
             file.Write(posX + " " + posY + " " + gocNghieng + " " + nCol + " " + nRow);
             int cnt = 0;
@@ -254,5 +214,59 @@ namespace ObjectMovingConsole
                     }
                 }
         }
+
+        public void printOnConsole()
+        {
+            for (int i = 0; i < nRow; ++i)
+            {
+                for (int j = 0; j < nCol; ++j)
+                {
+                    char t = kienHang[i][j].getChar();
+                    Console.Write(t);
+                    Console.Write(' ');
+                }
+                Console.Write('\n');
+            }
+        }
+        #endregion
+
+        #region setVariable
+        public void set(int x, int y, KienHang k)
+        {
+            kienHang[x][y].copy(k);
+        }
+        #endregion
+
+        #region getVariable
+        public KienHang get(int x, int y)
+        {
+            return kienHang[x][y];
+        }
+
+        public int getNRow()
+        {
+            return nRow;
+        }
+
+        public int getNCol()
+        {
+            return nCol;
+        }
+
+        public float getAngle()
+        {
+            return gocNghieng;
+        }
+
+        public int getPosX()
+        {
+            return posX;
+        }
+
+        public int getPosY()
+        {
+            return posY;
+        }
+        #endregion
     }
 }

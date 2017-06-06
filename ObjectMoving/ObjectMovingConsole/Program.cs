@@ -29,16 +29,16 @@ namespace ObjectMovingConsole
         }
 
         static public string Remove(string s, char ch)
-        {            
+        {
             while (s.Length > 0 && s[0] != ch)
-            {                
+            {
                 s = s.Remove(0, 1);
             }
             if (s.Length > 0) s = s.Remove(0, 1);
             return s;
         }
         #endregion
-        
+
         static void Main()
         {
             KhoHang kho = new KhoHang();
