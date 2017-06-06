@@ -31,7 +31,7 @@
             <MenuItem Header="_Tập tin">
                 <MenuItem Header="_Mở" Click="open_Click"/>
                 <MenuItem Header="_Lưu" Click="save_Click"/>
-                <MenuItem Header="_Cài đặt"/>
+                <MenuItem Header="_Cài đặt" Click="setting_Click"/>
                 <MenuItem Header="_Thoát" Click="quit_Click"/>
             </MenuItem>
             <MenuItem Header="_Khu hàng" Name="zoom_Menu" >
@@ -52,7 +52,6 @@
             <Label x:Name="textBlock1_Copy" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Đến:" VerticalContentAlignment="Center"/>
             <TextBox x:Name="endPos" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="68" VerticalContentAlignment="Center" Text="[k1] (x1, y1)"/>
             <Button x:Name="move" Content="Di chuyển" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightPink" ToolTip="Di chuyển hàng từ vị trí nguồn đến vị trí đích" Margin="10,6,0,6" Padding="5, 0, 5, 0" Click="move_Click"/>
-            <CheckBox x:Name="isOnline" Content="Trực tuyến" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="" Margin="10,6,0,6" Padding="5, 0, 5, 0" IsTabStop="False" IsHitTestVisible="True"/>
         </StackPanel>
 
         <!-- Thanh trượt phóng to, thu nhỏ kích thước !-->

@@ -19,10 +19,12 @@ namespace ObjectMovingConsole
         private static string fileLink;
         private static string httpLink;
         private static string ftpLink;
+        private static string nodejsServerLink;
         private static string username;
         private static string password;
-        private static bool Ftp = false;
-        public static Quobject.SocketIoClientDotNet.Client.Socket socket = IO.Socket("http://localhost:8080");
+        public static bool Ftp;
+        public static bool SocketConnected;
+        public static Quobject.SocketIoClientDotNet.Client.Socket socket;
         #endregion
         
         #region variable
@@ -64,6 +66,9 @@ namespace ObjectMovingConsole
         #region constructor
         static KhoHang()
         {
+            SocketConnected = false;
+            nodejsServerLink = "http://localhost:8080";
+            Ftp = false;
             defaultInputFile = "../../../Resources/input.txt";
             fileLink = "objectmoving.esy.es/input.txt";
             httpLink = "http://" + fileLink;
@@ -400,9 +405,6 @@ namespace ObjectMovingConsole
                     MessageBox.Show("Không thể kết nối với máy chủ.", "Lỗi kết nối");
                     return;
                 }
-            } else
-            {
-                receiveData();
             }
         }
         #endregion
@@ -458,8 +460,13 @@ namespace ObjectMovingConsole
         #endregion
 
         #region SocketIO
-        public static void create()
+        public static void connect(string ip="http://localhost:8080")
         {
+            if (SocketConnected == false)
+            {
+                socket = IO.Socket(ip);
+                SocketConnected = true;
+            }
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT, () =>
             {
                 socket.Emit("createRoom", "TH");
@@ -467,7 +474,7 @@ namespace ObjectMovingConsole
 
             socket.On("created", (data) =>
             {
-                MessageBox.Show("Created");
+                MessageBox.Show("Khởi tạo kết nối thành công!");
             });
 
             socket.On("exist", (data) =>
@@ -482,12 +489,12 @@ namespace ObjectMovingConsole
 
             socket.On("joined", (data) =>
             {
-                MessageBox.Show("Joined");
+                MessageBox.Show("Khởi tạo kết nối thành công!");
             });
 
             socket.On("notexist", (data) =>
             {
-                MessageBox.Show("Notexist");
+                MessageBox.Show("Khởi tạo kết nối thất bại!");
             });
         }
 
@@ -510,6 +517,7 @@ namespace ObjectMovingConsole
         public static void disconnect()
         {
             socket.Disconnect();
+            SocketConnected = false;
         }
         #endregion
     }

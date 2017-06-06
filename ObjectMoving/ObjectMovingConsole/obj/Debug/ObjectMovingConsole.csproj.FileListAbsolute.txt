@@ -20,3 +20,4 @@ C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\W
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\Newtonsoft.Json.xml
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.exe
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.pdb
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.csprojResolveAssemblyReference.cache

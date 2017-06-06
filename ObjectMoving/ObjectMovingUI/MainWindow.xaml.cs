@@ -24,7 +24,9 @@ namespace ObjectMovingUI
         private const int buttonHeight = 20; // Chiều dài các Button
         private const int buttonWidth = 40; // Chiều rộng các Button
         public static bool? Ftp = false;
+        public static bool? isOnline = false;
         public static string ip = null;
+        private Setting st;
 
         private StackPanel stackPanel; // Khu vực chứa các khu hàng
         private KButton draggedButton; // Nút được kéo đi
@@ -50,8 +52,9 @@ namespace ObjectMovingUI
         protected override void OnClosed(EventArgs e)
         {
             // Upload file trước khi đóng chương trình
-            if (isOnline.IsChecked == true)
+            if (isOnline == true && Ftp == true)
                 KhoHang.uploadFile();
+            stopListen();
             // Đóng các cửa sổ đang mở
             base.OnClosed(e);
             // Tắt chương trình
@@ -64,18 +67,16 @@ namespace ObjectMovingUI
             #region initialize
             // Khởi tạo các tham số ứng dụng
             InitializeComponent();
+            st = new Setting(this);
             Title = title;
             Icon = BitmapFrame.Create(new BitmapImage(iconUri));
             #endregion
 
             #region timerStart
             // Bắt đầu bộ đếm giờ
-            if (Ftp)
-            {
-                dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-                dispatcherTimer.Interval = new TimeSpan(0, 0, refreshTime);
-                dispatcherTimer.Start();
-            }
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, refreshTime);
+            dispatcherTimer.Start();
             #endregion
 
             #region captureMouseOnTextBox
@@ -88,12 +89,11 @@ namespace ObjectMovingUI
 
             #region drawMap
             // Download dữ liệu nếu đang trực tuyến và vẽ Kho Hàng            
-            if (Ftp)
-                KhoHang.downloadFile();
+            KhoHang.downloadFile();
+
             GenerateMap();
             GenerateZoomMenu();
             #endregion
-
         }
 
         #region dragToSelectFeature
@@ -423,7 +423,7 @@ namespace ObjectMovingUI
                 if (k.getWidth() != 0)
                 {
                     // PopUp cho phép sửa kiện hàng
-                    PopUp p = new PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline.IsChecked);
+                    PopUp p = new PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline);
                     if (p != null)
                     {
                         p.kichThuocEdit.Visibility = Visibility.Collapsed;
@@ -434,7 +434,7 @@ namespace ObjectMovingUI
                 else
                 {
                     // PopUp cho phép thêm kiện hàng
-                    PopUp p = new PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline.IsChecked);
+                    PopUp p = new PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline);
                     if (p != null)
                     {
                         p.kichThuoc.Visibility = Visibility.Collapsed;
@@ -507,7 +507,7 @@ namespace ObjectMovingUI
                 draggedButton = null;
                 khoHang.writeData();
                 // Cập nhật thông tin nếu đang trực tuyến
-                if (isOnline.IsChecked == true)
+                if (isOnline == true)
                     KhoHang.uploadFile();
             }
         }
@@ -524,7 +524,7 @@ namespace ObjectMovingUI
         protected void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             // Nếu đang trực tuyến thì cập nhật
-            if (isOnline.IsChecked == true)
+            if (isOnline == true && Ftp == true)
             {
                 KhoHang.downloadFile();
                 khoHang.loadData();
@@ -582,7 +582,7 @@ namespace ObjectMovingUI
                 }
             }
             khoHang.writeData();
-            if (isOnline.IsChecked == true)
+            if (isOnline == true)
                 KhoHang.uploadFile();
         }
         #endregion
@@ -602,7 +602,6 @@ namespace ObjectMovingUI
             {
                 string filename = dlg.FileName;
                 GenerateMap(filename);
-                isOnline.Visibility = Visibility.Hidden;
                 drawArea.InvalidateVisual();
             }
         }
@@ -700,7 +699,7 @@ namespace ObjectMovingUI
         #region listener
         private void listenData()
         {
-            KhoHang.create();
+            KhoHang.connect(ip);
             KhoHang.socket.On("getData", (data) =>
             {
                 StreamWriter sourceStream = new StreamWriter("../../../Resources/input.txt");
@@ -722,7 +721,32 @@ namespace ObjectMovingUI
                 });
             });
         }
+
+        private void stopListen()
+        {
+            KhoHang.disconnect();
+        }
         #endregion
+
+        #region setting
+        public void changeSetting(bool? isOnlineA,bool? FtpA, string IPA )
+        {
+            isOnline = isOnlineA;
+            Ftp = FtpA;
+            KhoHang.Ftp = (bool)FtpA;
+            ip = IPA;
+            if (isOnline == true && Ftp == false)
+                listenData();
+            if (isOnline == false && Ftp == false)
+                stopListen();
+        }
+
+        public void setting_Click(object sender, RoutedEventArgs e)
+        {
+            st.Show();
+        }
+        #endregion
+
     }
 
 }

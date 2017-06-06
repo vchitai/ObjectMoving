@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ObjectMovingUI"
         mc:Ignorable="d"
-        Title="Setting" Height="100" Width="300">
+        Title="Setting" Height="200" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -17,14 +18,18 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <CheckBox Name="isOnline" Content="Trực tuyến" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-        <RadioButton Name="FTPType" GroupName="type" Content="FTP" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-        <RadioButton Name="SocketType" GroupName="type" Content="Socket" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
-            <Label Content="IP" />
-            <TextBox Name="IPAdress" Width="100" Text="xxx.xxx.xxx.xxx"/>
-            <Label Content="Port"/>
-            <TextBox Name="Port" Width="20" Text="8080"/>
+        <CheckBox Margin="20, 0, 0, 0" Name="isOnline" Content="Trực tuyến" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Checked="showType" IsTabStop="False" IsHitTestVisible="True"/>
+        <RadioButton Margin="20, 0, 0, 0" Name="FTPType" GroupName="type" Content="FTP" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Checked="hideButton" Visibility="Collapsed"/>
+        <RadioButton Name="SocketType" GroupName="type" Content="Socket" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Checked="showButton" Visibility="Collapsed"/>
+        <StackPanel Name="Sp" Orientation="Horizontal" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed">
+            <Label Content="IP" VerticalAlignment="Center"  />
+            <TextBox Name="IPAdress" Width="100" Text="localhost" VerticalContentAlignment="Center"/>
+            <Label Content="Port" VerticalAlignment="Center" />
+            <TextBox Name="Port" Width="40" Text="8080" VerticalContentAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" >
+            <Button x:Name="save" Content="Lưu" HorizontalAlignment="Right" Height="27" VerticalAlignment="Center" Width="55" IsCancel="True" Click="save_Click" FontWeight="Bold" Background="White"/>
+            <Button x:Name="cancel" Content="Hủy" HorizontalAlignment="Right" Height="27" VerticalAlignment="Center" Width="55" IsCancel="True" Click="cancel_Click" Background="White" Margin="10, 0, 10, 0"/>
         </StackPanel>
     </Grid>
 </Window>
