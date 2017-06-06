@@ -31,9 +31,10 @@
             <MenuItem Header="_Tập tin">
                 <MenuItem Header="_Mở" Click="open_Click"/>
                 <MenuItem Header="_Lưu" Click="save_Click"/>
+                <MenuItem Header="_Cài đặt"/>
                 <MenuItem Header="_Thoát" Click="quit_Click"/>
             </MenuItem>
-            <MenuItem Header="_Phóng to" Name="zoom_Menu" >
+            <MenuItem Header="_Khu hàng" Name="zoom_Menu" >
                 <MenuItem Header="_All" Click="zoom_All"/>
             </MenuItem>
             <MenuItem Header="_Trợ giúp">

@@ -23,6 +23,8 @@ namespace ObjectMovingUI
         private static KhoHang khoHang; // Kho Hàng
         private const int buttonHeight = 20; // Chiều dài các Button
         private const int buttonWidth = 40; // Chiều rộng các Button
+        public static bool? Ftp = false;
+        public static string ip = null;
 
         private StackPanel stackPanel; // Khu vực chứa các khu hàng
         private KButton draggedButton; // Nút được kéo đi
@@ -33,6 +35,7 @@ namespace ObjectMovingUI
         private double[] posYkhuHang = new double[3] { -1, -1, -1 }; // Tọa độ Y của khu hàng
         private const int drawAreaPaddingX = 20; // Padding của khu vực vẽ
         private const int drawAreaPaddingY = 20; // Padding của khu vực vẽ
+        private const int Offset = 200;
 
         private const int refreshTime = 10; // Thời gian refreshData (giây)
         private DispatcherTimer dispatcherTimer = new DispatcherTimer(); // Bộ đếm giờ
@@ -55,7 +58,7 @@ namespace ObjectMovingUI
             App.Current.Shutdown();
         }
         #endregion
-        
+
         public MainWindow()
         {
             #region initialize
@@ -67,9 +70,12 @@ namespace ObjectMovingUI
 
             #region timerStart
             // Bắt đầu bộ đếm giờ
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, refreshTime);
-            dispatcherTimer.Start();
+            if (Ftp)
+            {
+                dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+                dispatcherTimer.Interval = new TimeSpan(0, 0, refreshTime);
+                dispatcherTimer.Start();
+            }
             #endregion
 
             #region captureMouseOnTextBox
@@ -82,10 +88,12 @@ namespace ObjectMovingUI
 
             #region drawMap
             // Download dữ liệu nếu đang trực tuyến và vẽ Kho Hàng            
-            KhoHang.downloadFile();
+            if (Ftp)
+                KhoHang.downloadFile();
             GenerateMap();
             GenerateZoomMenu();
             #endregion
+
         }
 
         #region dragToSelectFeature
@@ -113,7 +121,7 @@ namespace ObjectMovingUI
         {
             return Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         }
-        
+
         //Event thả chuột
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -212,7 +220,6 @@ namespace ObjectMovingUI
                 buttonList.Clear();
             buttonList = new List<List<List<KButton>>>();
             int currentPosX = 0;
-            int currentPosY = 0;
 
             for (int k = 0; k < khoHang.getSoLuongKhu(); k++)
             {
@@ -280,9 +287,9 @@ namespace ObjectMovingUI
                 wrapPanel.LayoutTransform = rotateTransform;
 
                 // Thiết đặt tọa độ cho khu hàng
-                wrapPanel.Margin = new Thickness(khuHang.getPosX() * buttonWidth - currentPosX, khuHang.getPosY() * buttonHeight - currentPosY, 0, 0);
+                wrapPanel.Margin = new Thickness(khuHang.getPosX() * buttonWidth - currentPosX, khuHang.getPosY() * buttonHeight, 0, 0);
+                //wrapPanel.Margin = new Thickness(Offset, 0, 0, 0);
                 currentPosX = (khuHang.getPosX() + col) * buttonWidth;
-                currentPosX = (khuHang.getPosY() + row) * buttonHeight;
                 stackPanel.Children.Add(wrapPanel);
 
                 // Thêm tên khu hàng
@@ -407,7 +414,7 @@ namespace ObjectMovingUI
         private void Btn_MouseDown(object sender, MouseButtonEventArgs e)
         {
             KButton btn = e.Source as KButton;
-            
+
             //Nếu nhấn chuột phải thì xử lý
             if (e.ChangedButton == MouseButton.Right)
             {
@@ -441,7 +448,7 @@ namespace ObjectMovingUI
             }
         }
         #endregion
-        
+
         #region showInfo&EffectHoverOnButton
         // Event lướt chuột qua Button
         private void Btn_MouseEnter(object sender, MouseEventArgs e)
@@ -462,7 +469,7 @@ namespace ObjectMovingUI
                 btn.getRight().Background = Brushes.LightBlue;
             }
         }
-        
+
         // Event dời chuột khỏi Button
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -522,6 +529,12 @@ namespace ObjectMovingUI
                 KhoHang.downloadFile();
                 khoHang.loadData();
             }
+            RefreshData();
+        }
+
+        // Refresh data bằng cách cập nhật lại hình ảnh
+        private void RefreshData()
+        {
             foreach (var lv1 in buttonList)
             {
                 foreach (var lv2 in lv1)
@@ -531,12 +544,6 @@ namespace ObjectMovingUI
                             k.updateBackGround();
                 }
             }
-            RefreshData();
-        }
-
-        // Refresh data bằng cách cập nhật lại hình ảnh
-        private void RefreshData()
-        {
             drawArea.InvalidateVisual();
         }
         #endregion
@@ -678,7 +685,7 @@ namespace ObjectMovingUI
             RotateTransform rt = new RotateTransform();
             ScaleTransform sc = new ScaleTransform(0.5 + 0.5 * (sld.Value / 50), 0.5 + 0.5 * (sld.Value / 50));
             rt.Angle = currentAngle;
-   
+
             transform.Children.Add(rt);
             transform.Children.Add(sc);
 
@@ -687,6 +694,33 @@ namespace ObjectMovingUI
             else
                 if (stackPanel != null)
                 stackPanel.LayoutTransform = transform;
+        }
+        #endregion
+
+        #region listener
+        private void listenData()
+        {
+            KhoHang.create();
+            KhoHang.socket.On("getData", (data) =>
+            {
+                StreamWriter sourceStream = new StreamWriter("../../../Resources/input.txt");
+                sourceStream.Write(data.ToString());
+                sourceStream.Close();
+                khoHang.loadData();
+                this.Dispatcher.Invoke(() =>
+                {
+                    foreach (var lv1 in buttonList)
+                    {
+                        foreach (var lv2 in lv1)
+                        {
+                            foreach (KButton k in lv2)
+                                if (k.Background != Brushes.LightBlue)
+                                    k.updateBackGround();
+                        }
+                    }
+                    drawArea.InvalidateVisual();
+                });
+            });
         }
         #endregion
     }

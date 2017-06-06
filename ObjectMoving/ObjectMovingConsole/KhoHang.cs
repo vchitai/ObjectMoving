@@ -4,6 +4,8 @@ using System.Text;
 using System.Windows;
 using System.Net;
 using System.IO;
+using System.Net.Sockets;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace ObjectMovingConsole
 {
@@ -19,8 +21,10 @@ namespace ObjectMovingConsole
         private static string ftpLink;
         private static string username;
         private static string password;
+        private static bool Ftp = false;
+        public static Quobject.SocketIoClientDotNet.Client.Socket socket = IO.Socket("http://localhost:8080");
         #endregion
-
+        
         #region variable
         private int soLuongKhu;
         private List<KhuHang> khu;
@@ -379,20 +383,26 @@ namespace ObjectMovingConsole
         }
         #endregion
 
-        #region donwloadData
+        #region downloadData
         public static void downloadFile()
         {
-            try
+            if (Ftp)
             {
-                string content = webClient.DownloadString(httpLink);
-                StreamWriter file = new StreamWriter(defaultInputFile);
-                file.Write(content);
-                file.Close();
-            }
-            catch (Exception)
+                try
+                {
+                    string content = webClient.DownloadString(httpLink);
+                    StreamWriter file = new StreamWriter(defaultInputFile);
+                    file.Write(content);
+                    file.Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Không thể kết nối với máy chủ.", "Lỗi kết nối");
+                    return;
+                }
+            } else
             {
-                MessageBox.Show("Không thể kết nối với máy chủ.", "Lỗi kết nối");
-                return;
+                receiveData();
             }
         }
         #endregion
@@ -400,43 +410,106 @@ namespace ObjectMovingConsole
         #region uploadData
         public static void uploadFile()
         {
-            try
+            if (Ftp)
             {
-                //Rename request
-                ftpWebRequest = (FtpWebRequest)WebRequest.Create(ftpLink);
-                ftpWebRequest.Credentials = nc;
-                ftpWebRequest.Method = WebRequestMethods.Ftp.Rename;
-                ftpWebRequest.RenameTo = "input2.txt";
-                ftpWebRequest.UseBinary = true;
-                ftpWebRequest.UsePassive = true;
-                ftpWebRequest.KeepAlive = true;
-                ftpWebRequest.GetResponse();
+                try
+                {
+                    //Rename request
+                    ftpWebRequest = (FtpWebRequest)WebRequest.Create(ftpLink);
+                    ftpWebRequest.Credentials = nc;
+                    ftpWebRequest.Method = WebRequestMethods.Ftp.Rename;
+                    ftpWebRequest.RenameTo = "input2.txt";
+                    ftpWebRequest.UseBinary = true;
+                    ftpWebRequest.UsePassive = true;
+                    ftpWebRequest.KeepAlive = true;
+                    ftpWebRequest.GetResponse();
 
-                //Upload
-                ftpWebRequest = (FtpWebRequest)WebRequest.Create(ftpLink);
-                ftpWebRequest.Credentials = nc;
-                ftpWebRequest.Method = WebRequestMethods.Ftp.UploadFile;
-                ftpWebRequest.UseBinary = true;
-                ftpWebRequest.UsePassive = true;
-                ftpWebRequest.KeepAlive = true;
+                    //Upload
+                    ftpWebRequest = (FtpWebRequest)WebRequest.Create(ftpLink);
+                    ftpWebRequest.Credentials = nc;
+                    ftpWebRequest.Method = WebRequestMethods.Ftp.UploadFile;
+                    ftpWebRequest.UseBinary = true;
+                    ftpWebRequest.UsePassive = true;
+                    ftpWebRequest.KeepAlive = true;
 
-                // Copy the contents of the file to the request stream.  
-                StreamReader sourceStream = new StreamReader(defaultInputFile);
-                byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
-                sourceStream.Close();
+                    // Copy the contents of the file to the request stream.  
+                    StreamReader sourceStream = new StreamReader(defaultInputFile);
+                    byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
+                    sourceStream.Close();
 
-                ftpWebRequest.ContentLength = fileContents.Length;
+                    ftpWebRequest.ContentLength = fileContents.Length;
 
-                Stream requestStream = ftpWebRequest.GetRequestStream();
-                requestStream.Write(fileContents, 0, fileContents.Length);
-                requestStream.Close();
-                ftpWebRequest.GetResponse();
+                    Stream requestStream = ftpWebRequest.GetRequestStream();
+                    requestStream.Write(fileContents, 0, fileContents.Length);
+                    requestStream.Close();
+                    ftpWebRequest.GetResponse();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Không thể kết nối với máy chủ.", "Lỗi kết nối");
+                    return;
+                }
             }
-            catch (Exception)
+            else
             {
-                MessageBox.Show("Không thể kết nối với máy chủ.", "Lỗi kết nối");
-                return;
+                emitData();
             }
+        }
+        #endregion
+
+        #region SocketIO
+        public static void create()
+        {
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT, () =>
+            {
+                socket.Emit("createRoom", "TH");
+            });
+
+            socket.On("created", (data) =>
+            {
+                MessageBox.Show("Created");
+            });
+
+            socket.On("exist", (data) =>
+            {
+                join();
+            });
+        }
+
+        public static void join()
+        {
+            socket.Emit("join", "TH");
+
+            socket.On("joined", (data) =>
+            {
+                MessageBox.Show("Joined");
+            });
+
+            socket.On("notexist", (data) =>
+            {
+                MessageBox.Show("Notexist");
+            });
+        }
+
+        public static void emitData()
+        {
+            StreamReader sourceStream = new StreamReader(defaultInputFile);
+            socket.Emit("sendData", sourceStream.ReadToEnd());
+            sourceStream.Close();
+        }
+
+        public static void receiveData()
+        {
+            socket.On("getData", (data) =>
+            {
+                StreamWriter sourceStream = new StreamWriter(defaultInputFile);
+                sourceStream.Write(data);                
+            });
+        }
+
+        public static void disconnect()
+        {
+            socket.Disconnect();
         }
         #endregion
     }

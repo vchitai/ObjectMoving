@@ -4,15 +4,19 @@ C:\Codes\Visual Studio\ObjectMoving\Check\Check\bin\Debug\Check.pdb
 C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\ObjectMovingConsole.csprojResolveAssemblyReference.cache
 C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.exe
 C:\Codes\Visual Studio\ObjectMoving\Check\Check\obj\Debug\Check.pdb
-C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.exe.config
-C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.exe
-C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.pdb
-C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.exe
-C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.pdb
-C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.csprojResolveAssemblyReference.cache
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.exe.config
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.exe
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.pdb
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.csprojResolveAssemblyReference.cache
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.exe
 C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.pdb
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.exe.config
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.exe
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\ObjectMovingConsole.pdb
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\EngineIoClientDotNet.dll
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\Newtonsoft.Json.dll
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\SocketIoClientDotNet.dll
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\WebSocket4Net.dll
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\bin\Debug\Newtonsoft.Json.xml
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.exe
+C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingConsole\obj\Debug\ObjectMovingConsole.pdb
