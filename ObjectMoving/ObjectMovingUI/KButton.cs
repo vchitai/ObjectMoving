@@ -16,6 +16,7 @@ namespace ObjectMovingUI
         #endregion
 
         #region staticVariable
+        // Lưu các file hình ảnh
         private static ImageBrush brush1;
         private static ImageBrush brush2;
         private static ImageBrush brush3;
@@ -39,6 +40,7 @@ namespace ObjectMovingUI
         #endregion
 
         #region getVariable
+        // Lấy thông tin từ trong class
         public string getInfo()
         {
             return kienHang.getInfo();
@@ -66,6 +68,7 @@ namespace ObjectMovingUI
         #endregion
 
         #region setVariable
+        // Thiết lập các biến
         public void setLeft(KButton b)
         {
             left = b;
@@ -78,6 +81,7 @@ namespace ObjectMovingUI
         #endregion
 
         #region updateBackground
+        // Cập nhật nền Button và các Button liên quan
         public void setBackGround(int id)
         {
             if (id == 0)
@@ -98,7 +102,7 @@ namespace ObjectMovingUI
             }
         }
 
-        private void upBackGround()
+        public void upBackGround()
         {
             this.setBackGround(kienHang.getWidth());
         }
@@ -114,6 +118,7 @@ namespace ObjectMovingUI
         #endregion
 
         #region moveFunction
+        // Di chuyển kiện hàng và cập nhật nền Button
         public void move(KhoHang k, KButton b)
         {
             k.Move(khu, x, y, b.khu, b.x, b.y);

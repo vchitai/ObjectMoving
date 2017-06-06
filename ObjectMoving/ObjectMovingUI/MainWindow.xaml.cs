@@ -24,19 +24,20 @@ namespace ObjectMovingUI
         private const int buttonHeight = 20; // Chiều dài các Button
         private const int buttonWidth = 40; // Chiều rộng các Button
 
-        private StackPanel sp; // Khu vực chứa các khu hàng
+        private StackPanel stackPanel; // Khu vực chứa các khu hàng
         private KButton draggedButton; // Nút được kéo đi
         private KButton droppedButton; // Nút được thả xuống
-        private WrapPanel wpCurrent = null; // Khu hàng hiện đang xử lý
-        private float angleCurrent = 0; // Góc xoay hiện tại
+        private WrapPanel currentWrapPanel = null; // Khu hàng hiện đang xử lý
+        private float currentAngle = 0; // Góc xoay hiện tại
         private double[] posXkhuHang = new double[3] { -1, -1, -1 }; // Tọa độ X của khu hàng
         private double[] posYkhuHang = new double[3] { -1, -1, -1 }; // Tọa độ Y của khu hàng
-        private const int startOffsetX = 20; // Khoảng cách mặc định của các Panel
-        private const int startOffsetY = 20; // Khoảng cách mặc định của các Panel
+        private const int drawAreaPaddingX = 20; // Padding của khu vực vẽ
+        private const int drawAreaPaddingY = 20; // Padding của khu vực vẽ
 
+        private const int refreshTime = 10; // Thời gian refreshData (giây)
         private DispatcherTimer dispatcherTimer = new DispatcherTimer(); // Bộ đếm giờ
         private TextBox selTb = null; // Textbox đang xử lý
-        private List<List<List<KButton>>> list_button; // Danh sách các Button
+        private List<List<List<KButton>>> buttonList; // Danh sách các Button
 
         private bool mouseDown = false; // Trạng thái đang giữ của chuột
         private Point mouseDownPos; // Điểm click chuột
@@ -67,7 +68,7 @@ namespace ObjectMovingUI
             #region timerStart
             // Bắt đầu bộ đếm giờ
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, refreshTime);
             dispatcherTimer.Start();
             #endregion
 
@@ -88,11 +89,11 @@ namespace ObjectMovingUI
             #endregion
         }
 
-        #region DragToSelectFeature
+        #region dragToSelectFeature
         // Event nhấn chuột
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (wpCurrent != null)
+            if (currentWrapPanel != null)
                 return;
             // Bắt đầu theo dõi chuột
             mouseDown = true;
@@ -134,7 +135,7 @@ namespace ObjectMovingUI
             // Bắt đầu xử lý, pos là số thứ tự khu hàng
             int pos = -1;
             bool ok = false;
-            foreach (var lv1 in list_button)
+            foreach (var lv1 in buttonList)
             {
                 pos = pos + 1;
                 foreach (var lv2 in lv1)
@@ -201,26 +202,29 @@ namespace ObjectMovingUI
         #region generateMapFeature
         private void GenerateMap(string fileName = "../../../Resources/input.txt")
         {
-            // Khởi tạo các biến số kho hàng
-            DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-            DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            // Khởi tạo các biến số kho hàng, stackPanel, buttonList và drawArea
+            drawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            drawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            drawArea.Padding = new Thickness(drawAreaPaddingX, drawAreaPaddingY, drawAreaPaddingX, drawAreaPaddingY);
             khoHang = new KhoHang(fileName);
-            sp = new StackPanel();
-            sp.Orientation = Orientation.Horizontal;
-            if (list_button != null)
-                list_button.Clear();
-            list_button = new List<List<List<KButton>>>();
+            stackPanel = new StackPanel();
+            stackPanel.Orientation = Orientation.Horizontal;
+            if (buttonList != null)
+                buttonList.Clear();
+            buttonList = new List<List<List<KButton>>>();
+            int currentPosX = 0;
+            int currentPosY = 0;
 
             for (int k = 0; k < khoHang.getSoLuongKhu(); k++)
             {
+                // Khởi tạo các biến số khu hàng, wrapPanel
                 KhuHang khuHang = khoHang.getKhu(k);
-                WrapPanel wp = new WrapPanel();
+                WrapPanel wrapPanel = new WrapPanel();
                 int row = khuHang.getNRow();
                 int col = khuHang.getNCol();
-                wp.Height = buttonHeight * (row + 1);
-                wp.Width = buttonWidth * col;
-                wp.VerticalAlignment = VerticalAlignment.Top;
-
+                wrapPanel.Height = buttonHeight * (row + 1);
+                wrapPanel.Width = buttonWidth * col;
+                wrapPanel.VerticalAlignment = VerticalAlignment.Top;
                 List<List<KButton>> button_list;
 
                 button_list = new List<List<KButton>>();
@@ -234,18 +238,19 @@ namespace ObjectMovingUI
                         btn.Height = buttonHeight;
                         btn.Width = buttonWidth;
                         btn.Content = btn.Name;
+                        btn.AllowDrop = true;
+                        btn.PreviewMouseMove += Btn_PreviewMouseMove;
+                        btn.Drop += Btn_Drop;
                         btn.MouseDown += Btn_MouseDown;
                         btn.GotMouseCapture += Btn_GotMouseCapture;
                         btn.MouseEnter += Btn_MouseEnter;
                         btn.MouseLeave += Btn_MouseLeave;
-                        btn.setBackGround(khuHang.get(i, j).getWidth());
-                        btn.AllowDrop = true;
-                        btn.PreviewMouseMove += Btn_PreviewMouseMove;
-                        btn.Drop += Btn_Drop;
+                        btn.upBackGround();
                         button_list[i].Add(btn);
                     }
                 }
 
+                // Thiết lập buttonList
                 for (int i = 0; i < row; ++i)
                 {
                     for (int j = 0; j < col; ++j)
@@ -266,58 +271,61 @@ namespace ObjectMovingUI
                 {
                     for (int j = 0; j < col; j++)
                     {
-                        wp.Children.Add(button_list[i][j]);
+                        wrapPanel.Children.Add(button_list[i][j]);
                     }
                 }
 
-                RotateTransform rt = new RotateTransform();
-                rt.Angle = khuHang.getAngle();
-                wp.LayoutTransform = rt;
+                // Tạo hiệu ứng xoay khu hàng
+                RotateTransform rotateTransform = new RotateTransform();
+                rotateTransform.Angle = khuHang.getAngle();
+                wrapPanel.LayoutTransform = rotateTransform;
 
-                if (k != khoHang.getSoLuongKhu() - 1)
-                    wp.Margin = new Thickness(startOffsetX + khuHang.getPosX() * buttonWidth, startOffsetY + khuHang.getPosY() * buttonHeight, 0, 0);
-                else
-                    wp.Margin = new Thickness(startOffsetX + khuHang.getPosX() * buttonWidth, startOffsetY + khuHang.getPosY() * buttonHeight, startOffsetX, startOffsetY);
-                sp.Children.Add(wp);
+                // Thiết đặt tọa độ cho khu hàng
+                wrapPanel.Margin = new Thickness(khuHang.getPosX() * buttonWidth - currentPosX, khuHang.getPosY() * buttonHeight - currentPosY, 0, 0);
+                currentPosX = (khuHang.getPosX() + col) * buttonWidth;
+                currentPosX = (khuHang.getPosY() + row) * buttonHeight;
+                stackPanel.Children.Add(wrapPanel);
 
-                list_button.Add(button_list);
-                angleCurrent = 0;
-                sldZoom.Value = 50;
-                sldZoom.IsEnabled = true;
-
+                // Thêm tên khu hàng
                 Label khuHangName = new Label();
                 khuHangName.Height = buttonHeight;
-                khuHangName.Width = wp.Width;
+                khuHangName.Width = wrapPanel.Width;
                 khuHangName.Content = "Khu hàng " + (k + 1).ToString();
                 khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
-                khuHangName.Padding = new Thickness(0, 0, 0, 0);
+                khuHangName.Padding = new Thickness(0);
+                wrapPanel.Children.Add(khuHangName);
 
-                wp.Children.Add(khuHangName);
+                buttonList.Add(button_list);
             }
-            DrawArea.Content = sp;
-            DrawArea.Loaded += Page_Loaded;
+            currentAngle = 0;
+            sldZoom.Value = 50;
+            sldZoom.IsEnabled = true;
+            drawArea.Content = stackPanel;
+            drawArea.Loaded += Page_Loaded;
         }
 
         private void GenerateMapZoom1Khu(int khu = 1, string fileName = "../../../Resources/input.txt")
         {
-            sldZoom.IsEnabled = true;
+            // Khởi tạo các biến số kho hàng, stackPanel, buttonList và drawArea
+            drawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            drawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            drawArea.Padding = new Thickness(drawAreaPaddingX, drawAreaPaddingY, drawAreaPaddingX, drawAreaPaddingY);
             khoHang = new KhoHang(fileName);
-            DrawArea.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-            DrawArea.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            sp = new StackPanel();
-            sp.Orientation = Orientation.Horizontal;
-            if (list_button != null)
-                list_button.Clear();
-            list_button = new List<List<List<KButton>>>();
+            stackPanel = new StackPanel();
+            stackPanel.Orientation = Orientation.Horizontal;
+            if (buttonList != null)
+                buttonList.Clear();
+            buttonList = new List<List<List<KButton>>>();
             khu--;
             {
+                // Khởi tạo các biến số khu hàng, wrapPanel
                 KhuHang khuHang = khoHang.getKhu(khu);
-                WrapPanel wp = new WrapPanel();
+                WrapPanel wrapPanel = new WrapPanel();
                 int row = khuHang.getNRow();
                 int col = khuHang.getNCol();
-                wp.Height = buttonHeight * (row + 1);
-                wp.Width = buttonWidth * col;
-
+                wrapPanel.Height = buttonHeight * (row + 1);
+                wrapPanel.Width = buttonWidth * col;
+                wrapPanel.VerticalAlignment = VerticalAlignment.Top;
                 List<List<KButton>> button_list;
 
                 button_list = new List<List<KButton>>();
@@ -331,18 +339,19 @@ namespace ObjectMovingUI
                         btn.Height = buttonHeight;
                         btn.Width = buttonWidth;
                         btn.Content = btn.Name;
+                        btn.AllowDrop = true;
+                        btn.PreviewMouseMove += Btn_PreviewMouseMove;
+                        btn.Drop += Btn_Drop;
                         btn.MouseDown += Btn_MouseDown;
                         btn.GotMouseCapture += Btn_GotMouseCapture;
                         btn.MouseEnter += Btn_MouseEnter;
                         btn.MouseLeave += Btn_MouseLeave;
-                        btn.setBackGround(khuHang.get(i, j).getWidth());
-                        btn.AllowDrop = true;
-                        btn.PreviewMouseMove += Btn_PreviewMouseMove;
-                        btn.Drop += Btn_Drop;
+                        btn.upBackGround();
                         button_list[i].Add(btn);
                     }
                 }
 
+                // Thiết lập buttonList
                 for (int i = 0; i < row; ++i)
                 {
                     for (int j = 0; j < col; ++j)
@@ -363,48 +372,51 @@ namespace ObjectMovingUI
                 {
                     for (int j = 0; j < col; j++)
                     {
-                        wp.Children.Add(button_list[i][j]);
+                        wrapPanel.Children.Add(button_list[i][j]);
                     }
                 }
 
-                RotateTransform rt = new RotateTransform();
-                rt.Angle = khuHang.getAngle();
+                // Tạo hiệu ứng xoay khu hàng
+                RotateTransform rotateTransform = new RotateTransform();
+                rotateTransform.Angle = khuHang.getAngle();
+                wrapPanel.LayoutTransform = rotateTransform;
 
-                wp.LayoutTransform = rt;
-
-                sp.Children.Add(wp);
-                sp.HorizontalAlignment = HorizontalAlignment.Center;
-                list_button.Add(button_list);
-                wpCurrent = wp;
-                angleCurrent = khuHang.getAngle();
-                sldZoom.Value = 50;
-
+                // Thêm tên khu hàng
                 Label khuHangName = new Label();
                 khuHangName.Height = buttonHeight;
-                khuHangName.Width = wp.Width;
+                khuHangName.Width = wrapPanel.Width;
                 khuHangName.Content = "Khu hàng " + (khu + 1).ToString();
                 khuHangName.HorizontalContentAlignment = HorizontalAlignment.Center;
-                khuHangName.Padding = new Thickness(0, 0, 0, 0);
+                khuHangName.Padding = new Thickness(0);
 
-                wp.Children.Add(khuHangName);
+                stackPanel.Children.Add(wrapPanel);
+                stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
+                stackPanel.VerticalAlignment = VerticalAlignment.Center;
+                buttonList.Add(button_list);
+                currentWrapPanel = wrapPanel;
+                currentAngle = khuHang.getAngle();
+                sldZoom.Value = 50;
+                wrapPanel.Children.Add(khuHangName);
             }
-
-            DrawArea.Content = sp;
-
-            DrawArea.Loaded += Page_Loaded;
+            drawArea.Content = stackPanel;
+            drawArea.Loaded += Page_Loaded;
         }
         #endregion
 
-        #region EditKienHang
+        #region editKienHang
+        // Event nhấn chuột
         private void Btn_MouseDown(object sender, MouseButtonEventArgs e)
         {
             KButton btn = e.Source as KButton;
-
+            
+            //Nếu nhấn chuột phải thì xử lý
             if (e.ChangedButton == MouseButton.Right)
             {
                 KienHang k = btn.getKienHang();
+                // Nếu tồn tại kiện hàng
                 if (k.getWidth() != 0)
                 {
+                    // PopUp cho phép sửa kiện hàng
                     PopUp p = new PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline.IsChecked);
                     if (p != null)
                     {
@@ -412,8 +424,10 @@ namespace ObjectMovingUI
                         p.Show();
                     }
                 }
+                // Nếu không tồn tại kiện hàng
                 else
                 {
+                    // PopUp cho phép thêm kiện hàng
                     PopUp p = new PopUp(btn.getKienHang(), btn, khoHang, (bool)isOnline.IsChecked);
                     if (p != null)
                     {
@@ -430,12 +444,15 @@ namespace ObjectMovingUI
         #endregion
         
         #region showInfo&EffectHoverOnButton
+        // Event lướt chuột qua Button
         private void Btn_MouseEnter(object sender, MouseEventArgs e)
         {
             KButton btn = e.Source as KButton;
 
+            // Hiển thị tooltip là thông tin kho hàng
             btn.ToolTip = btn.getInfo();
 
+            // Thay đổi màu của Button
             btn.Background = Brushes.LightBlue;
             if (btn.getKienHang().getWidth() == -2)
             {
@@ -447,19 +464,24 @@ namespace ObjectMovingUI
             }
         }
         
+        // Event dời chuột khỏi Button
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
         {
             KButton btn = e.Source as KButton;
 
+            // Thiết lập màu Button về mặc định
             btn.updateBackGround();
         }
         #endregion
 
         #region dragDropFeature
+        // Event theo dõi di chuyển của chuột
         private void Btn_PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            // Nếu nhấn chuột
             if (e.LeftButton == MouseButtonState.Pressed)
             {
+                // Lưu lại nút bị kéo
                 draggedButton = (KButton)sender;
                 int x = 0;
                 DragDrop.DoDragDrop((KButton)sender, x, DragDropEffects.All);
@@ -467,14 +489,18 @@ namespace ObjectMovingUI
             }
         }
 
+        // Event thả chuột
         private void Btn_Drop(object sender, DragEventArgs e)
         {
+            // Nếu đã kéo một nút nào đó
             if (draggedButton != null)
             {
+                // Bắt đầu di chuyển
                 droppedButton = (KButton)sender;
                 draggedButton.move(khoHang, droppedButton);
                 draggedButton = null;
                 khoHang.writeData();
+                // Cập nhật thông tin nếu đang trực tuyến
                 if (isOnline.IsChecked == true)
                     KhoHang.uploadFile();
             }
@@ -482,19 +508,22 @@ namespace ObjectMovingUI
         #endregion
 
         #region refreshData
+        // Refresh dữ liệu khi load trang
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             RefreshData();
         }
 
+        // Bộ đếm giờ làm việc
         protected void dispatcherTimer_Tick(object sender, EventArgs e)
         {
+            // Nếu đang trực tuyến thì cập nhật
             if (isOnline.IsChecked == true)
             {
                 KhoHang.downloadFile();
                 khoHang.loadData();
             }
-            foreach (var lv1 in list_button)
+            foreach (var lv1 in buttonList)
             {
                 foreach (var lv2 in lv1)
                 {
@@ -506,14 +535,15 @@ namespace ObjectMovingUI
             RefreshData();
         }
 
+        // Refresh data bằng cách cập nhật lại hình ảnh
         private void RefreshData()
         {
-            DrawArea.InvalidateVisual();
+            drawArea.InvalidateVisual();
         }
         #endregion
 
         #region moveUsingTextBoxFeature
-
+        // Reset text nếu bấm chuột vào các ô nhập tọa độ di chuyển
         private void Btn_GotMouseCapture(object sender, MouseEventArgs e)
         {
             if (selTb != null)
@@ -532,11 +562,12 @@ namespace ObjectMovingUI
             selTb.Text = "";
         }
 
+        // Lấy tọa độ và truyền command về kho hàng để xử lý
         private void move_Click(object sender, RoutedEventArgs e)
         {
             string command = "M " + startPos.Text + " " + endPos.Text;
             khoHang.moveByCommand(command);
-            foreach (var lv1 in list_button)
+            foreach (var lv1 in buttonList)
             {
                 foreach (var lv2 in lv1)
                 {
@@ -551,28 +582,35 @@ namespace ObjectMovingUI
         #endregion
 
         #region fileMenuFeature
+        // Mở file tùy chọn
         public void open_Click(object sender, RoutedEventArgs e)
         {
+            // Mở hộp thoại chọn file và thiết lập chỉ chọn file txt, kiểm tra khả năng truy xuất
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.DefaultExt = ".txt";
             dlg.Filter = "Text Files (*.txt)|*.txt";
             bool? result = dlg.ShowDialog();
 
+            // Nếu có khả năng truy xuất thì xử lý file và cập nhật dữ liệu
             if (result == true)
             {
                 string filename = dlg.FileName;
                 GenerateMap(filename);
                 isOnline.Visibility = Visibility.Hidden;
-                DrawArea.InvalidateVisual();
+                drawArea.InvalidateVisual();
             }
         }
 
+        // Lưu file tùy chọn
         public void save_Click(object sender, RoutedEventArgs e)
         {
+            // Mở hộp thoại chọn file và thiết lập chỉ chọn file txt, kiểm tra khả năng truy xuất
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.DefaultExt = ".txt";
             dlg.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
             bool? result = dlg.ShowDialog();
+
+            // Nếu có khả năng truy xuất thì lưu file
             if (result == true)
             {
                 string filename = dlg.FileName;
@@ -580,6 +618,7 @@ namespace ObjectMovingUI
             }
         }
 
+        // Thoát chương trình
         public void quit_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -587,6 +626,7 @@ namespace ObjectMovingUI
         #endregion
 
         #region guideMenuFeature
+        // Mở file hướng dẫn sử dụng
         public void guide_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -603,6 +643,7 @@ namespace ObjectMovingUI
         #endregion
 
         #region zoomMenuFeature
+        // Tạo menu phóng to gồm các khu hàng và gán sự kiện cho các menu
         public void GenerateZoomMenu()
         {
             for (int i = 0; i < khoHang.getSoLuongKhu(); i++)
@@ -624,26 +665,29 @@ namespace ObjectMovingUI
 
         public void zoom_All(object sender, RoutedEventArgs e)
         {
-            wpCurrent = null;
+            currentWrapPanel = null;
             GenerateMap();
         }
         #endregion
 
         #region zoomSliderFeature
+        // Lấy giá trị trong Slider và bắt đầu phóng to các phần cần thiết
         private void sldZoom_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Slider sld = sender as Slider;
             TransformGroup transform = new TransformGroup();
             RotateTransform rt = new RotateTransform();
-            rt.Angle = angleCurrent;
             ScaleTransform sc = new ScaleTransform(0.5 + 0.5 * (sld.Value / 50), 0.5 + 0.5 * (sld.Value / 50));
+            rt.Angle = currentAngle;
+   
             transform.Children.Add(rt);
             transform.Children.Add(sc);
-            if (wpCurrent != null)
-                wpCurrent.LayoutTransform = transform;
+
+            if (currentWrapPanel != null)
+                currentWrapPanel.LayoutTransform = transform;
             else
-                if (sp != null)
-                sp.LayoutTransform = transform;
+                if (stackPanel != null)
+                stackPanel.LayoutTransform = transform;
         }
         #endregion
     }
