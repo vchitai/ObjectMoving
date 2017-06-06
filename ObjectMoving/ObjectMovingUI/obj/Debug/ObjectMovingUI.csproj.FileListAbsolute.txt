@@ -89,3 +89,6 @@ C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\Object
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.csproj.GenerateResource.Cache
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.exe
 C:\Codes\Visual Studio\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.pdb
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\bin\Debug\ObjectMovingUI.exe.config
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.exe
+C:\Users\Vinh Ton That\Desktop\ObjectMoving\ObjectMoving\ObjectMovingUI\obj\Debug\ObjectMovingUI.pdb

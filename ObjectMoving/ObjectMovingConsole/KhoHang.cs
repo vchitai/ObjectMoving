@@ -9,32 +9,42 @@ namespace ObjectMovingConsole
 {
     public class KhoHang
     {
-        #region staticVariable
         private static WebClient webClient;
         private static FtpWebRequest ftpWebRequest;
-        private static NetworkCredential nc;
         private static string defaultInputFile;
         private static string fileLink;
         private static string httpLink;
         private static string ftpLink;
-        private static string username;
+        private static string userName;
         private static string password;
-        #endregion
+        private static NetworkCredential nc;
 
-        #region variable
         private int soLuongKhu;
         private List<KhuHang> khu;
-        #endregion
 
-        #region handleString
-        static public string Remove(string s, char ch)
+        //khoi tao kho hang
+        static KhoHang()
         {
-            while (s.Length > 0 && s[0] != ch)
-            {
-                s = s.Remove(0, 1);
-            }
-            if (s.Length > 0) s = s.Remove(0, 1);
-            return s;
+            defaultInputFile = "../../../Resources/input.txt";
+            fileLink = "objectmoving.esy.es/input.txt";
+            httpLink = "http://" + fileLink;
+            ftpLink = "ftp://" + fileLink;
+            userName = "u288570171";
+            password = "3781159";
+            webClient = new WebClient();
+            nc = new NetworkCredential(userName, password);
+        }
+
+        //lay so luong khu hang trong kho
+        public int getSoLuongKhu()
+        {
+            return soLuongKhu;
+        }
+
+        //lay thong tin cua mot khu
+        public KhuHang getKhu(int i)
+        {
+            return khu[i];
         }
 
         private int toInt(string s)
@@ -55,21 +65,8 @@ namespace ObjectMovingConsole
 
             return res;
         }
-        #endregion
 
-        #region constructor
-        static KhoHang()
-        {
-            defaultInputFile = "../../../Resources/input.txt";
-            fileLink = "objectmoving.esy.es/input.txt";
-            httpLink = "http://" + fileLink;
-            ftpLink = "ftp://" + fileLink;
-            username = "u288570171";
-            password = "3781159";
-            webClient = new WebClient();
-            nc = new NetworkCredential(username, password);
-        }
-
+        //khoi tao kho hang tu moi file txt cho truoc
         public KhoHang(string fileName = "../../../Resources/input.txt")
         {
             defaultInputFile = fileName;
@@ -86,21 +83,20 @@ namespace ObjectMovingConsole
             }
             file.Close();
         }
-        #endregion
 
-        #region getVariable
-        public int getSoLuongKhu()
+        //ham ho tro xu ly chuoi
+        static public string Remove(string s, char ch)
         {
-            return soLuongKhu;
+            while (s.Length > 0 && s[0] != ch)
+            {
+                s = s.Remove(0, 1);
+            }
+            if (s.Length > 0) s = s.Remove(0, 1);
+            return s;
         }
 
-        public KhuHang getKhu(int i)
-        {
-            return khu[i];
-        }
-        #endregion
-
-        #region moveFunction
+        //ham di chuyen kien ham tu lenh temp_line
+        //format lenh: M [k0] (x0,y0) [k1] (x1,y1)
         public void moveByCommand(string temp_line)
         {
             string line = "";
@@ -225,6 +221,75 @@ namespace ObjectMovingConsole
             }
         }
 
+        //ham cap nhat du lieu thu file cho truoc
+        //dung trong dong bo hoa du lieu
+        public void loadData()
+        {
+            try
+            {
+                StreamReader file = new StreamReader(defaultInputFile);
+                string line = file.ReadLine();
+
+                if (line == null) return;
+
+                soLuongKhu = toInt(line);
+
+                for (int i = 0; i < soLuongKhu; ++i)
+                {
+                    khu[i].loadData(file);
+                }
+                file.Close();
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                MessageBox.Show("Không thể truy cập được file.", "Lỗi truy cập file");
+                return;
+            }
+        }
+
+        //ham cap nhat du lieu vao file cho truoc
+        //dung trong dong bo hoa du lieu
+        public void writeData()
+        {
+            try
+            {
+                StreamWriter file = new StreamWriter(defaultInputFile);
+                file.Write(soLuongKhu);
+                file.WriteLine("");
+                for (int i = 0; i < soLuongKhu; ++i)
+                {
+                    khu[i].writeData(file);
+                }
+                file.Close();
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                MessageBox.Show("Không thể truy cập được file.", "Lỗi truy cập file");
+                return;
+            }
+        }
+
+        //ham xuat thong tin kho hang len man hinh console
+        public void printOnConsole()
+        {
+            for (int i = 0; i < soLuongKhu; ++i)
+            {
+                Console.Write("["); Console.Write(i + 1); Console.Write("]\n");
+                khu[i].printOnConsole();
+            }
+
+        }
+
+        //ham di chuyen kien hang [pre_k] (pre_x,pre_y) den [new_k] (new_x,new_y)
+        //cac ket qua tra ve
         //-1: Dich den khong hop le
         //-2: Khong co hang o (pre_x, pre_y)
         //-3: Toa do qua gioi han        
@@ -286,100 +351,9 @@ namespace ObjectMovingConsole
 
             return 1;
         }
-        #endregion
 
-        #region readData
-        public void loadData()
-        {
-            try
-            {
-                StreamReader file = new StreamReader(defaultInputFile);
-                string line = file.ReadLine();
 
-                if (line == null) return;
-
-                soLuongKhu = toInt(line);
-
-                for (int i = 0; i < soLuongKhu; ++i)
-                {
-                    khu[i].loadData(file);
-                }
-                file.Close();
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                MessageBox.Show("Không thể truy cập được file.", "Lỗi truy cập file");
-                return;
-            }
-        }
-
-        public void saveTo(string fileName)
-        {
-            StreamWriter file;
-            try
-            {
-                file = new StreamWriter(fileName);
-                file.Write(soLuongKhu);
-                file.WriteLine("");
-                for (int i = 0; i < soLuongKhu; ++i)
-                {
-                    khu[i].writeData(file);
-                }
-                file.Close();
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                MessageBox.Show("Không thể truy xuất tập tin.", "Lỗi đường dẫn");
-                return;
-            }
-        }
-        #endregion
-
-        #region writeData
-        public void writeData()
-        {
-            try
-            {
-                StreamWriter file = new StreamWriter(defaultInputFile);
-                file.Write(soLuongKhu);
-                file.WriteLine("");
-                for (int i = 0; i < soLuongKhu; ++i)
-                {
-                    khu[i].writeData(file);
-                }
-                file.Close();
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                MessageBox.Show("Không thể truy cập được file.", "Lỗi truy cập file");
-                return;
-            }
-        }
-
-        public void printOnConsole()
-        {
-            for (int i = 0; i < soLuongKhu; ++i)
-            {
-                Console.Write("["); Console.Write(i + 1); Console.Write("]\n");
-                khu[i].printOnConsole();
-            }
-
-        }
-        #endregion
-
-        #region donwloadData
+        //cap nhat file tu server
         public static void downloadFile()
         {
             try
@@ -389,20 +363,19 @@ namespace ObjectMovingConsole
                 file.Write(content);
                 file.Close();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("Không thể kết nối với máy chủ.", "Lỗi kết nối");
                 return;
             }
         }
-        #endregion
 
-        #region uploadData
+        //upload file len server
         public static void uploadFile()
         {
             try
             {
-                //Rename request
+                // Rename
                 ftpWebRequest = (FtpWebRequest)WebRequest.Create(ftpLink);
                 ftpWebRequest.Credentials = nc;
                 ftpWebRequest.Method = WebRequestMethods.Ftp.Rename;
@@ -438,6 +411,31 @@ namespace ObjectMovingConsole
                 return;
             }
         }
-        #endregion
+
+        //truy xuat tap tin de luu tru thong tin cua kho hang
+        public void saveTo(string fileName)
+        {
+            StreamWriter file;
+            try
+            {
+                file = new StreamWriter(fileName);
+                file.Write(soLuongKhu);
+                file.WriteLine("");
+                for (int i = 0; i < soLuongKhu; ++i)
+                {
+                    khu[i].writeData(file);
+                }
+                file.Close();
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                MessageBox.Show("Không thể truy xuất tập tin.", "Lỗi đường dẫn");
+                return;
+            }
+        }
     }
 }

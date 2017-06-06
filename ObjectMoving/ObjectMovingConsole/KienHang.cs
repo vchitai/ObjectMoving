@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace ObjectMovingConsole
 {
+    //class luu tru thong tin ngay thang nhap xuat kho
     public class Date
     {
-        #region variable
         private int ngay;
         private int thang;
         private int nam;
-        #endregion
 
-        #region handleString
         private int toInt(string s)
         {
             int res = 0;
@@ -34,62 +32,66 @@ namespace ObjectMovingConsole
 
             return res;
         }
-        #endregion
 
-        #region constructor
+        //khoi tao ngay mac dinh
         public Date()
         {
             ngay = thang = nam = -1;
         }
 
+        //khoi tao ngay voi thong tin cho truoc
         public Date(int _ngay, int _thang, int _nam)
         {
             ngay = _ngay;
             thang = _thang;
             nam = _nam;
-        }        
+        }
 
+        //khoi tao ngay tu moi chuoi 
         public Date(string s)
         {
-            ngay = toInt(""+ s[0] + s[1]);
+            ngay = toInt("" + s[0] + s[1]);
             thang = toInt("" + s[3] + s[4]);
             nam = toInt("" + s[6] + s[7] + s[8] + s[9]);
         }
-        #endregion
 
-        #region setVariable
+        //cap nhat thong tin ngay
         public void capNhatNgay(int _ngay)
         {
             ngay = _ngay;
         }
 
+        //cap nhat thong tin thang
         public void capNhatThang(int _thang)
         {
             thang = _thang;
         }
 
+        //cap nhat thong tin nam
         public void capNhatNam(int _nam)
         {
             nam = _nam;
         }
-        #endregion
 
-        #region getVariable
+        //lay ngay
         public int layNgay()
         {
             return ngay;
         }
 
+        //lay thang
         public int layThang()
         {
             return thang;
         }
 
+        //lay nam
         public int layNam()
         {
             return nam;
         }
 
+        //lay thong tin ngay thang nam theo chuan DD/MM/YYYY
         public string getInfo()
         {
             string res = "";
@@ -104,6 +106,7 @@ namespace ObjectMovingConsole
             return res;
         }
 
+        //xuat ngay theo dinh dang string
         public string getDayInfo()
         {
             if (ngay == -1)
@@ -113,6 +116,7 @@ namespace ObjectMovingConsole
             return String.Format("{0}", ngay);
         }
 
+        //xuat thang theo dinh dang string
         public string getThangInfo()
         {
             if (thang == -1)
@@ -122,6 +126,7 @@ namespace ObjectMovingConsole
             return String.Format("{0}", thang);
         }
 
+        //xuat nam theo dinh dang string
         public string getNamInfo()
         {
             if (nam == -1)
@@ -130,9 +135,8 @@ namespace ObjectMovingConsole
             }
             return String.Format("{0}", nam);
         }
-        #endregion
 
-        #region checkDate
+        //kiem tra ngay thang nam co hop le khong
         private static bool check_date(int day, int month, int year)
         {
             int leap = 0;
@@ -145,53 +149,52 @@ namespace ObjectMovingConsole
             switch (month)
             {
                 case 1:
-                    upper =  31;
+                    upper = 31;
                     break;
                 case 2:
                     if (leap == 1)
-                        upper =  29;
-                    else upper =  28;
+                        upper = 29;
+                    else upper = 28;
                     break;
                 case 3:
-                    upper =  31;
+                    upper = 31;
                     break;
                 case 4:
-                    upper =  30;
+                    upper = 30;
                     break;
                 case 5:
-                    upper =  31;
+                    upper = 31;
                     break;
                 case 6:
-                    upper =  30;
+                    upper = 30;
                     break;
                 case 7:
-                    upper =  31;
+                    upper = 31;
                     break;
                 case 8:
-                    upper =  31;
+                    upper = 31;
                     break;
                 case 9:
-                    upper =  30;
+                    upper = 30;
                     break;
                 case 10:
-                    upper =  31;
+                    upper = 31;
                     break;
                 case 11:
-                    upper =  30;
+                    upper = 30;
                     break;
                 case 12:
-                    upper =  31;
-                    break;                
+                    upper = 31;
+                    break;
             }
 
             if (day < 1 || day > upper) return false;
             return true;
         }
-        #endregion
 
-        #region convertDate
+        //chuyen ngay thang nam tu chuoi thanh Date
         public static Date convert(string _day, string _month, string _year)
-        {            
+        {
             int x;
             int day = 0;
             int month = 0;
@@ -218,12 +221,10 @@ namespace ObjectMovingConsole
 
             return new Date();
         }
-        #endregion
     }
 
     public class KienHang
     {
-        #region variable
         private int posX;
         private int posY;
         private int width;
@@ -234,9 +235,8 @@ namespace ObjectMovingConsole
         private string maKienHang;
         private int donGia;
         private Date ngayNhapKho;
-        #endregion
 
-        #region constructor
+        //khoi tao kien hang
         public KienHang()
         {
             posX = posY = width = 0;
@@ -245,6 +245,7 @@ namespace ObjectMovingConsole
             ngayNhapKho = new Date(-1, -1, -1);
         }
 
+        //khoi tao kien hang tu thong tin cho truoc
         public KienHang(int x, int y, int w)
         {
             posX = x; posY = y; width = w;
@@ -253,6 +254,7 @@ namespace ObjectMovingConsole
             ngayNhapKho = new Date(-1, -1, -1);
         }
 
+        //khoi tao kien hang tu thong tin cho truoc
         public KienHang(int x, int y, int w, string _maKienHang, int _donGia, Date _ngayNhapKho)
         {
             posX = x; posY = y; width = w;
@@ -260,9 +262,8 @@ namespace ObjectMovingConsole
             donGia = _donGia;
             ngayNhapKho = _ngayNhapKho;
         }
-        #endregion
 
-        #region getVariable
+        //lay thong tin ve kien hang       
         public string getInfo()
         {
             string res = "";
@@ -273,61 +274,15 @@ namespace ObjectMovingConsole
             else
             {
                 res = String.Format("Độ dài:                  {0}.\n", Math.Abs(width));
-                res = res +         "Ngày nhập kho:    " + ngayNhapKho.getInfo() + ".\n";
-                res = res +         "Mã kiện hàng:       " + maKienHang + ".\n";
+                res = res + "Ngày nhập kho:    " + ngayNhapKho.getInfo() + ".\n";
+                res = res + "Mã kiện hàng:       " + maKienHang + ".\n";
                 res = res + String.Format("Đơn giá:                {0}.", donGia);
                 res = res + "\n\nClick chuột phải để chỉnh sửa thông tin kiện hàng.";
             }
-            return res;             
-        }
-        
-        public string getWidthInfo()
-        {
-            return String.Format("{0}", Math.Abs(width));
+            return res;
         }
 
-        public string getNgayInfo()
-        {
-            return ngayNhapKho.getDayInfo();
-        }
-
-        public string getThangInfo()
-        {
-            return ngayNhapKho.getThangInfo();
-        }
-
-        public string getNamInfo()
-        {
-            return ngayNhapKho.getNamInfo();
-        }
-
-        public string getDayInfo()
-        {
-            return ngayNhapKho.getDayInfo();
-        }
-
-        public string getMaKienInfo()
-        {
-            return maKienHang;
-        }
-
-        public string getDonGiaInfo()
-        {
-            return String.Format("{0}", donGia);
-        }
-
-        public char getChar()
-        {
-            return (width == 0 ? '-' : (width == 1 ? '1' : '2'));
-        }
-
-        public int getWidth()
-        {
-            return width;
-        }
-        #endregion
-
-        #region setVariable
+        //thiet lap thong tin moi cho kien hang
         internal void set(int _x, int _y, int _w, string _maKienHang, int _donGia, Date _ngayNhapKho)
         {
             posX = _x;
@@ -337,6 +292,68 @@ namespace ObjectMovingConsole
             donGia = _donGia;
             ngayNhapKho = _ngayNhapKho;
         }
+
+        //lay thong tin do dai
+        public string getWidthInfo()
+        {
+            return String.Format("{0}", Math.Abs(width));
+        }
+
+        //lay thong tin ngay nhap kho theo dinh dang chuoi
+        public string getNgayInfo()
+        {
+            return ngayNhapKho.getDayInfo();
+        }
+
+        //lay thong tin thang nhap kho theo dinh dang chuoi
+        public string getThangInfo()
+        {
+            return ngayNhapKho.getThangInfo();
+        }
+
+        //ghi thong tin kien hang vao file
+        internal void writeData(StreamWriter file)
+        {
+            file.Write(posX + " " + posY + " " + width + " " + maKienHang + " " + donGia + " " + ngayNhapKho.getInfo());
+        }
+
+        //lay thong tin nam nhap kho theo dinh dang chuoi
+        public string getNamInfo()
+        {
+            return ngayNhapKho.getNamInfo();
+        }
+
+        //lay thong tin ngay nhap kho theo dinh dang chuoi
+        public string getDayInfo()
+        {
+            return ngayNhapKho.getDayInfo();
+        }
+
+        //lay thong tin ma kien hang
+        public string getMaKienInfo()
+        {
+            return maKienHang;
+        }
+
+        //lay thong tin don gia
+        public string getDonGiaInfo()
+        {
+            return String.Format("{0}", donGia);
+        }
+
+        //lay ki tu bieu tuong cho kien hang
+        public char getChar()
+        {
+            return (width == 0 ? '-' : (width == 1 ? '1' : '2'));
+        }
+
+        //lay kich thuoc ngang
+        public int getWidth()
+        {
+            return width;
+        }
+
+        //cap nhat thong tin kien hang
         private void updateInfo(int w, Date d, string maKien, int gia)
         {
             width = -2;
@@ -345,16 +362,19 @@ namespace ObjectMovingConsole
             donGia = gia;
         }
 
+        //thiet lap kien hang phai
         public void setKienHangRight(KienHang k)
         {
             right = k;
         }
 
+        //thiet lap kien hang trai
         public void setKienHangLeft(KienHang k)
         {
             left = k;
         }
 
+        //thiet lap thong tin kien hang
         public int setInfo(string ngay, string thang, string nam, string maKien, string _donGia)
         {
             Date d = Date.convert(ngay, thang, nam);
@@ -374,6 +394,7 @@ namespace ObjectMovingConsole
             return 1;
         }
 
+        //thiet lap thong tin kien hang
         public int setInfo2(string _kichThuoc, string ngay, string thang, string nam, string maKien, string _donGia)
         {
             int x = 0;
@@ -411,6 +432,7 @@ namespace ObjectMovingConsole
             return 1;
         }
 
+        //thiet lap trang thai rong cho kien hang
         private void setEmpty()
         {
             width = 0;
@@ -419,6 +441,7 @@ namespace ObjectMovingConsole
             ngayNhapKho = new Date(-1, -1, -1);
         }
 
+        //copy thong tin tu KienHang k
         public void copy(KienHang k)
         {
             width = k.width;
@@ -427,6 +450,7 @@ namespace ObjectMovingConsole
             ngayNhapKho = k.ngayNhapKho;
         }
 
+        //cap nhat lai trang thai kien hang (ke ca kien hang 2 o)
         public void refresh()
         {
             if (width == 2)
@@ -440,19 +464,11 @@ namespace ObjectMovingConsole
             this.setEmpty();
         }
 
+        //thiet lap toa do X, Y cua kien hang
         public void setXY(int x, int y)
         {
             posX = x;
             posY = y;
         }
-        #endregion
-
-        #region writeData
-        internal void writeData(StreamWriter file)
-        {
-            file.Write(posX + " " + posY + " " + width + " " + maKienHang + " " + donGia + " " + ngayNhapKho.getInfo());
-        }
-        #endregion
-
     }
 }
